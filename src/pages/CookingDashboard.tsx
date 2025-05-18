@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
     Box,
     Container,
@@ -31,8 +32,37 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { alpha } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 
+// Import cuisine paths data
+import cuisinePathsData from '../data/cuisinePaths.json';
+
 // Assuming Profile component provides user information
 import { Profile } from '../components/Profile';
+
+// Define types for our data
+interface Recipe {
+  name: string;
+  ingredient: string;
+  amount: string;
+}
+
+interface Lesson {
+  id: number;
+  name: string;
+  unlocked: boolean;
+  difficulty: number;
+  recipes: Recipe[];
+  image: string;
+}
+
+interface CuisinePath {
+  id: string;
+  name: string;
+  image: string;
+  progress: number;
+  totalLessons: number;
+  description: string;
+  lessons: Lesson[];
+}
 
 export default function CookingDashboard() {
     const theme = useTheme();
@@ -62,19 +92,15 @@ export default function CookingDashboard() {
         badges: ["Pasta Pro", "Dessert Master"]
     };
 
-    const userCourses = [
-        { name: 'Asian Cuisine', image: '/asian-cusine.jpg', progress: 60, lessons: 8 },
-        { name: 'Baking Basics', image: '/baking.jpg', progress: 30, lessons: 12 },
-        { name: 'Mediterranean Magic', image: '/meda.jpg', progress: 45, lessons: 10 },
-        { name: 'Vegan Delights', image: '/vegan.jpg', progress: 15, lessons: 6 },
-    ];
+    // Use the imported cuisine paths data with proper typing
+    const cuisinePaths: CuisinePath[] = cuisinePathsData as CuisinePath[];
 
     const recommendedCourses = [
         { name: 'Sushi Mastery', image: '/sushi.jpg', rating: 4.8, duration: '4 weeks' },
         { name: 'Indian Street Food', image: '/indianstreet.jpg', rating: 4.6, duration: '3 weeks' },
     ];
 
-    const [primary, ...others] = userCourses;
+    const [primary, ...others] = cuisinePaths;
 
     // Calculate progress indicator width
     const getProgressWidth = (progress: number) => {
@@ -83,6 +109,10 @@ export default function CookingDashboard() {
     
     // Determine if we should show condensed header
     const isScrolled = scrollPosition > 100;
+
+    const handleCourseClick = (courseId: string) => {
+        navigate(`/lessonpath/${courseId}`);
+    };
 
     return (
         <Box sx={{ bgcolor: theme.palette.grey[50], minHeight: '100vh', pb: 10 }}>
@@ -216,7 +246,7 @@ export default function CookingDashboard() {
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                 <AccessTimeIcon fontSize="small" />
                                 <Typography variant="caption">
-                                    {primary.lessons} lessons
+                                    {primary.totalLessons} lessons
                                 </Typography>
                             </Box>
                         </Box>
@@ -227,7 +257,7 @@ export default function CookingDashboard() {
                                 Progress: {primary.progress}%
                             </Typography>
                             <Typography variant="body2" fontWeight="bold" color="primary">
-                                {Math.round(primary.progress / 100 * primary.lessons)}/{primary.lessons} lessons
+                                {Math.round(primary.progress / 100 * primary.totalLessons)}/{primary.totalLessons} lessons
                             </Typography>
                         </Box>
                         <Box sx={{ height: 8, bgcolor: theme.palette.grey[200], borderRadius: 4, overflow: 'hidden' }}>
@@ -249,7 +279,7 @@ export default function CookingDashboard() {
                                     py: 1,
                                     fontWeight: 'bold'
                                 }}
-                                onClick={() => navigate('/lessonpath')}
+                                onClick={() => handleCourseClick(primary.id)}
                             >
                                 Continue Learning
                             </Button>
@@ -281,32 +311,33 @@ export default function CookingDashboard() {
                     </Button>
                 </Box>
                 
-                <Grid container spacing={2}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 4 }}>
                     {others.map((course, index) => {
                         const isClickable = course.name === 'Mediterranean Magic';
                         
                         const courseCard = (
                             <Card
                                 sx={{
-                                    height: '100%',
                                     display: 'flex',
                                     flexDirection: 'column',
                                     borderRadius: 3,
                                     overflow: 'hidden',
                                     boxShadow: `0 2px 12px ${alpha(theme.palette.common.black, 0.08)}`,
                                     transition: 'transform 0.2s, box-shadow 0.2s',
+                                    height: 260,
+                                    width: '100%',
                                     '&:hover': {
                                         transform: 'translateY(-4px)',
                                         boxShadow: `0 8px 24px ${alpha(theme.palette.common.black, 0.12)}`,
                                     }
                                 }}
                             >
-                                <Box sx={{ position: 'relative' }}>
+                                <Box sx={{ position: 'relative', height: 140 }}>
                                     <CardMedia
                                         component="img"
                                         image={course.image}
                                         alt={course.name}
-                                        sx={{ height: 140, objectFit: 'cover' }}
+                                        sx={{ height: '100%', objectFit: 'cover' }}
                                     />
                                     <Box 
                                         sx={{ 
@@ -327,63 +358,64 @@ export default function CookingDashboard() {
                                         />
                                     </Box>
                                 </Box>
-                                <Box sx={{ p: 2, flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                                    <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+                                <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
+                                    <Typography variant="subtitle1" fontWeight="bold">
                                         {course.name}
                                     </Typography>
-                                    <Box 
-                                        sx={{ 
-                                            display: 'flex', 
-                                            alignItems: 'center', 
-                                            mt: 'auto',
-                                            color: theme.palette.text.secondary
-                                        }}
-                                    >
-                                        <MenuBookIcon fontSize="small" sx={{ mr: 0.5 }} />
-                                        <Typography variant="caption">
-                                            {course.lessons} lessons
-                                        </Typography>
-                                        <Box sx={{ ml: 'auto' }}>
+                                    
+                                    <Box>
+                                        <Box 
+                                            sx={{ 
+                                                display: 'flex', 
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                                mb: 1.5
+                                            }}
+                                        >
+                                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                                <MenuBookIcon fontSize="small" sx={{ mr: 0.5, color: theme.palette.text.secondary }} />
+                                                <Typography variant="caption" color="text.secondary">
+                                                    {course.totalLessons} lessons
+                                                </Typography>
+                                            </Box>
                                             <Typography variant="caption" fontWeight="bold" color="primary.main">
-                                                {course.progress}%
+                                                {course.progress}% complete
                                             </Typography>
                                         </Box>
+                                        <Button
+                                            size="small"
+                                            variant="outlined"
+                                            fullWidth
+                                            sx={{ 
+                                                borderRadius: 2,
+                                                py: 0.5
+                                            }}
+                                            onClick={() => handleCourseClick(course.id)}
+                                        >
+                                            Continue
+                                        </Button>
                                     </Box>
                                 </Box>
                             </Card>
                         );
 
+                        const wrapperProps = {
+                            width: { xs: '100%', sm: 'calc(50% - 8px)', md: 'calc(33.33% - 11px)' },
+                            position: 'relative',
+                            mb: { xs: 2, sm: 2 }
+                        };
+
                         return (
-                            <Grid 
-                                item
-                                xs={12} 
-                                sm={6} 
-                                md={4} 
-                                key={index}
-                            >
-                                {isClickable ? (
-                                    <ButtonBase 
-                                        sx={{ 
-                                            display: 'block', 
-                                            textAlign: 'initial', 
-                                            width: '100%',
-                                            borderRadius: 3,
-                                        }}
-                                        onClick={() => navigate('/lessonpath')}
-                                    >
-                                        {courseCard}
-                                    </ButtonBase>
-                                ) : (
-                                    courseCard
-                                )}
-                            </Grid>
+                            <Box key={index} sx={wrapperProps}>
+                                {courseCard}
+                            </Box>
                         );
                     })}
-                </Grid>
+                </Box>
             </Container>
 
             {/* Recommended Courses */}
-            <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
+            <Container maxWidth="md" sx={{ mt: 4, mb: 6 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                     <Typography
                         variant="h6"
@@ -405,13 +437,14 @@ export default function CookingDashboard() {
                     </Button>
                 </Box>
                 
-                <Grid container spacing={2}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                     {recommendedCourses.map((course, index) => (
-                        <Grid 
-                            item
-                            xs={12} 
-                            sm={6} 
-                            key={index}
+                        <Box 
+                            key={index} 
+                            sx={{ 
+                                width: { xs: '100%', sm: 'calc(50% - 8px)' },
+                                mb: { xs: 2, sm: 0 }
+                            }}
                         >
                             <ButtonBase 
                                 sx={{ 
@@ -459,9 +492,9 @@ export default function CookingDashboard() {
                                     </Box>
                                 </Card>
                             </ButtonBase>
-                        </Grid>
+                        </Box>
                     ))}
-                </Grid>
+                </Box>
 
                 <Box textAlign="center" mt={4}>
                     <Button 
@@ -484,8 +517,7 @@ export default function CookingDashboard() {
                 </Box>
             </Container>
 
-            {/* Floating Action Button */}
-            <Fab
+            {/* <Fab
                 variant="extended"
                 color="primary"
                 onClick={() => navigate('/pantry')}
@@ -504,7 +536,7 @@ export default function CookingDashboard() {
             >
                 <AddIcon sx={{ mr: 1 }} />
                 {isScrolled ? 'Add' : 'Add Ingredients'}
-            </Fab>
+            </Fab> */}
         </Box>
     );
 }

@@ -1,0 +1,499 @@
+[
+  {
+    "id": "asian-cuisine",
+    "name": "Asian Cuisine",
+    "image": "/asian-cusine.jpg",
+    "progress": 60,
+    "totalLessons": 8,
+    "description": "Explore the rich flavors and techniques of Asian cooking",
+    "lessons": [
+      {
+        "id": 1,
+        "name": "Simple Stir Fry",
+        "unlocked": true,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Basic Sauce", "ingredient": "Soy Sauce", "amount": "50ml" },
+          { "name": "Vegetable Prep", "ingredient": "Mixed Vegetables", "amount": "300g" },
+          { "name": "Rice", "ingredient": "Rice", "amount": "200g" }
+        ],
+        "image": "/stir-fry.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Spring Rolls",
+        "unlocked": true,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Roll Wrappers", "ingredient": "Rice Paper", "amount": "8 pcs" },
+          { "name": "Filling Mix", "ingredient": "Bean Sprouts", "amount": "100g" },
+          { "name": "Dipping Sauce", "ingredient": "Hoisin Sauce", "amount": "30ml" }
+        ],
+        "image": "/spring-rolls.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Sushi Basics",
+        "unlocked": true,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Sushi Rice", "ingredient": "Short Grain Rice", "amount": "250g" },
+          { "name": "Rice Seasoning", "ingredient": "Rice Vinegar", "amount": "40ml" },
+          { "name": "Nori Sheets", "ingredient": "Nori", "amount": "5 pcs" },
+          { "name": "Filling", "ingredient": "Cucumber", "amount": "1 pc" }
+        ],
+        "image": "/sushi.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Pad Thai",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Noodles", "ingredient": "Rice Noodles", "amount": "200g" },
+          { "name": "Sauce Mix", "ingredient": "Tamarind Paste", "amount": "30g" },
+          { "name": "Protein", "ingredient": "Tofu", "amount": "150g" }
+        ],
+        "image": "/pad-thai.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Fried Rice",
+        "unlocked": false,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Cooked Rice", "ingredient": "Rice", "amount": "300g" },
+          { "name": "Vegetable Mix", "ingredient": "Mixed Vegetables", "amount": "150g" },
+          { "name": "Egg", "ingredient": "Eggs", "amount": "2 pcs" }
+        ],
+        "image": "/fried-rice.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Dumplings",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Dumpling Wrappers", "ingredient": "Flour", "amount": "200g" },
+          { "name": "Filling", "ingredient": "Ground Pork", "amount": "250g" },
+          { "name": "Dipping Sauce", "ingredient": "Black Vinegar", "amount": "30ml" }
+        ],
+        "image": "/dumplings.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Tom Yum Soup",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Broth Base", "ingredient": "Lemongrass", "amount": "2 stalks" },
+          { "name": "Aromatics", "ingredient": "Galangal", "amount": "30g" },
+          { "name": "Protein", "ingredient": "Shrimp", "amount": "200g" }
+        ],
+        "image": "/tom-yum.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Bao Buns",
+        "unlocked": false,
+        "difficulty": 5,
+        "recipes": [
+          { "name": "Dough", "ingredient": "Flour", "amount": "300g" },
+          { "name": "Filling", "ingredient": "Pork Belly", "amount": "250g" },
+          { "name": "Sauce", "ingredient": "Hoisin Sauce", "amount": "40ml" }
+        ],
+        "image": "/bao.jpg"
+      }
+    ]
+  },
+  {
+    "id": "baking-basics",
+    "name": "Baking Basics",
+    "image": "/baking.jpg",
+    "progress": 30,
+    "totalLessons": 12,
+    "description": "Master the fundamentals of baking with these essential recipes",
+    "lessons": [
+      {
+        "id": 1,
+        "name": "Classic Cookies",
+        "unlocked": true,
+        "difficulty": 1,
+        "recipes": [
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "250g" },
+          { "name": "Wet Mix", "ingredient": "Butter", "amount": "150g" },
+          { "name": "Sweetener", "ingredient": "Sugar", "amount": "200g" },
+          { "name": "Flavor", "ingredient": "Vanilla Extract", "amount": "5ml" }
+        ],
+        "image": "/cookies.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Quick Bread",
+        "unlocked": true,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "300g" },
+          { "name": "Leavener", "ingredient": "Baking Powder", "amount": "10g" },
+          { "name": "Wet Mix", "ingredient": "Milk", "amount": "200ml" },
+          { "name": "Fat", "ingredient": "Vegetable Oil", "amount": "60ml" }
+        ],
+        "image": "/quick-bread.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Muffins",
+        "unlocked": true,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "250g" },
+          { "name": "Wet Mix", "ingredient": "Milk", "amount": "150ml" },
+          { "name": "Fat", "ingredient": "Butter", "amount": "100g" },
+          { "name": "Mix-ins", "ingredient": "Blueberries", "amount": "150g" }
+        ],
+        "image": "/muffins.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Simple Cake",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "300g" },
+          { "name": "Wet Mix", "ingredient": "Milk", "amount": "200ml" },
+          { "name": "Fat", "ingredient": "Butter", "amount": "200g" },
+          { "name": "Eggs", "ingredient": "Eggs", "amount": "3 pcs" }
+        ],
+        "image": "/simple-cake.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Pie Crust",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "250g" },
+          { "name": "Fat", "ingredient": "Butter", "amount": "150g" },
+          { "name": "Liquid", "ingredient": "Ice Water", "amount": "60ml" }
+        ],
+        "image": "/pie-crust.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Fruit Pie",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Pie Crust", "ingredient": "Pie Dough", "amount": "300g" },
+          { "name": "Filling", "ingredient": "Apples", "amount": "600g" },
+          { "name": "Sweetener", "ingredient": "Sugar", "amount": "150g" },
+          { "name": "Thickener", "ingredient": "Cornstarch", "amount": "15g" }
+        ],
+        "image": "/fruit-pie.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Brownies",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Chocolate Base", "ingredient": "Dark Chocolate", "amount": "200g" },
+          { "name": "Fat", "ingredient": "Butter", "amount": "150g" },
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "150g" },
+          { "name": "Eggs", "ingredient": "Eggs", "amount": "3 pcs" }
+        ],
+        "image": "/brownies.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Basic Bread",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Flour Mix", "ingredient": "Bread Flour", "amount": "500g" },
+          { "name": "Yeast Mixture", "ingredient": "Yeast", "amount": "7g" },
+          { "name": "Liquid", "ingredient": "Water", "amount": "350ml" },
+          { "name": "Salt", "ingredient": "Salt", "amount": "10g" }
+        ],
+        "image": "/basic-bread.jpg"
+      },
+      {
+        "id": 9,
+        "name": "Dinner Rolls",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Dough", "ingredient": "Bread Flour", "amount": "400g" },
+          { "name": "Enrichment", "ingredient": "Butter", "amount": "60g" },
+          { "name": "Liquid", "ingredient": "Milk", "amount": "200ml" },
+          { "name": "Yeast", "ingredient": "Yeast", "amount": "7g" }
+        ],
+        "image": "/dinner-rolls.jpg"
+      },
+      {
+        "id": 10,
+        "name": "Cream Puffs",
+        "unlocked": false,
+        "difficulty": 5,
+        "recipes": [
+          { "name": "Choux Pastry", "ingredient": "Butter", "amount": "120g" },
+          { "name": "Liquid", "ingredient": "Water", "amount": "240ml" },
+          { "name": "Dry Mix", "ingredient": "Flour", "amount": "150g" },
+          { "name": "Eggs", "ingredient": "Eggs", "amount": "4 pcs" }
+        ],
+        "image": "/cream-puffs.jpg"
+      },
+      {
+        "id": 11,
+        "name": "Frosting",
+        "unlocked": false,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Fat Base", "ingredient": "Butter", "amount": "230g" },
+          { "name": "Sweetener", "ingredient": "Powdered Sugar", "amount": "500g" },
+          { "name": "Flavor", "ingredient": "Vanilla Extract", "amount": "5ml" }
+        ],
+        "image": "/frosting.jpg"
+      },
+      {
+        "id": 12,
+        "name": "Layer Cake",
+        "unlocked": false,
+        "difficulty": 5,
+        "recipes": [
+          { "name": "Cake Layers", "ingredient": "Cake Flour", "amount": "350g" },
+          { "name": "Wet Mix", "ingredient": "Butter", "amount": "230g" },
+          { "name": "Eggs", "ingredient": "Eggs", "amount": "4 pcs" },
+          { "name": "Frosting", "ingredient": "Buttercream", "amount": "600g" }
+        ],
+        "image": "/layer-cake.jpg"
+      }
+    ]
+  },
+  {
+    "id": "mediterranean-magic",
+    "name": "Mediterranean Magic",
+    "image": "/meda.jpg",
+    "progress": 45,
+    "totalLessons": 10,
+    "description": "Discover the healthy and flavorful dishes of Mediterranean cuisine",
+    "lessons": [
+      {
+        "id": 1,
+        "name": "Spiced Potatoes",
+        "unlocked": true,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Boiled Potatoes", "ingredient": "Potatoes", "amount": "500g" },
+          { "name": "Spice Mix", "ingredient": "Spice Mix", "amount": "2 tsp" },
+          { "name": "Olive Oil", "ingredient": "Olive Oil", "amount": "40ml" }
+        ],
+        "image": "/spicedpotato.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Tabbouleh",
+        "unlocked": true,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Parsley", "ingredient": "Parsley", "amount": "1 bunch" },
+          { "name": "Lemon Dressing", "ingredient": "Lemons", "amount": "1 pc" },
+          { "name": "Grain Cook", "ingredient": "Bulgur", "amount": "100g" }
+        ],
+        "image": "/tabbouleh.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Fattoush",
+        "unlocked": true,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Pita Bread", "ingredient": "Pita Bread", "amount": "2 pcs" },
+          { "name": "Cherry Tomatoes", "ingredient": "Cherry Tomatoes", "amount": "200g" },
+          { "name": "Onions", "ingredient": "Onions", "amount": "1/2 pc" },
+          { "name": "Cucumber", "ingredient": "Cucumbers", "amount": "1 pc" },
+          { "name": "Olive Oil", "ingredient": "Olive Oil", "amount": "40ml" },
+          { "name": "Lemon", "ingredient": "Lemons", "amount": "1 pc" },
+          { "name": "Fresh Garlic", "ingredient": "Fresh Garlic", "amount": "1 clove" }
+        ],
+        "image": "/fattoush.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Mujadara",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Lentils", "ingredient": "Lentils", "amount": "200g" },
+          { "name": "Onions", "ingredient": "Onions", "amount": "2 pcs" },
+          { "name": "Rice", "ingredient": "Rice", "amount": "150g" }
+        ],
+        "image": "/mujadara.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Kofta",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Mix Meat", "ingredient": "Ground Meat", "amount": "300g" },
+          { "name": "Form Skewers", "ingredient": "Skewers", "amount": "4 pcs" },
+          { "name": "Grill", "ingredient": "Oil", "amount": "1 tbsp" }
+        ],
+        "image": "/kofta.png"
+      },
+      {
+        "id": 6,
+        "name": "Shish Tawook",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Marinate Chicken", "ingredient": "Chicken", "amount": "400g" },
+          { "name": "Skewer Prep", "ingredient": "Skewers", "amount": "4 pcs" },
+          { "name": "Grill", "ingredient": "Oil", "amount": "1 tbsp" }
+        ],
+        "image": "/shish_tawook.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Falafel",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Bean Mix", "ingredient": "Chickpeas", "amount": "300g" },
+          { "name": "Herb Mix", "ingredient": "Fresh Herbs", "amount": "50g" },
+          { "name": "Fry", "ingredient": "Cooking Oil", "amount": "500ml" }
+        ],
+        "image": "/falafel.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Hummus",
+        "unlocked": false,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Chickpeas", "ingredient": "Chickpeas", "amount": "250g" },
+          { "name": "Tahini", "ingredient": "Tahini", "amount": "60g" },
+          { "name": "Lemon Juice", "ingredient": "Lemons", "amount": "1 pc" },
+          { "name": "Olive Oil", "ingredient": "Olive Oil", "amount": "30ml" }
+        ],
+        "image": "/hummus.jpg"
+      },
+      {
+        "id": 9,
+        "name": "Baklava",
+        "unlocked": false,
+        "difficulty": 5,
+        "recipes": [
+          { "name": "Phyllo Layers", "ingredient": "Phyllo Dough", "amount": "1 package" },
+          { "name": "Nut Filling", "ingredient": "Mixed Nuts", "amount": "350g" },
+          { "name": "Butter", "ingredient": "Butter", "amount": "200g" },
+          { "name": "Syrup", "ingredient": "Honey", "amount": "150ml" }
+        ],
+        "image": "/baklava.jpg"
+      },
+      {
+        "id": 10,
+        "name": "Greek Salad",
+        "unlocked": false,
+        "difficulty": 1,
+        "recipes": [
+          { "name": "Vegetables", "ingredient": "Tomatoes", "amount": "3 pcs" },
+          { "name": "Cucumber", "ingredient": "Cucumber", "amount": "1 pc" },
+          { "name": "Cheese", "ingredient": "Feta Cheese", "amount": "200g" },
+          { "name": "Olives", "ingredient": "Kalamata Olives", "amount": "100g" },
+          { "name": "Dressing", "ingredient": "Olive Oil", "amount": "45ml" }
+        ],
+        "image": "/greek-salad.jpg"
+      }
+    ]
+  },
+  {
+    "id": "vegan-delights",
+    "name": "Vegan Delights",
+    "image": "/vegan.jpg",
+    "progress": 15,
+    "totalLessons": 6,
+    "description": "Create delicious plant-based meals that everyone will love",
+    "lessons": [
+      {
+        "id": 1,
+        "name": "Chickpea Curry",
+        "unlocked": true,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Base", "ingredient": "Chickpeas", "amount": "400g" },
+          { "name": "Aromatics", "ingredient": "Onions", "amount": "1 pc" },
+          { "name": "Spices", "ingredient": "Curry Powder", "amount": "20g" },
+          { "name": "Liquid", "ingredient": "Coconut Milk", "amount": "400ml" }
+        ],
+        "image": "/chickpea-curry.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Stuffed Peppers",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Peppers", "ingredient": "Bell Peppers", "amount": "4 pcs" },
+          { "name": "Grain", "ingredient": "Quinoa", "amount": "200g" },
+          { "name": "Protein", "ingredient": "Black Beans", "amount": "250g" },
+          { "name": "Seasoning", "ingredient": "Mixed Herbs", "amount": "10g" }
+        ],
+        "image": "/stuffed-peppers.jpg"
+      },
+      {
+        "id": 3,
+        "name": "Buddha Bowl",
+        "unlocked": false,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Grain Base", "ingredient": "Brown Rice", "amount": "200g" },
+          { "name": "Protein", "ingredient": "Tofu", "amount": "250g" },
+          { "name": "Vegetables", "ingredient": "Mixed Vegetables", "amount": "300g" },
+          { "name": "Dressing", "ingredient": "Tahini", "amount": "40g" }
+        ],
+        "image": "/buddha-bowl.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Lentil Soup",
+        "unlocked": false,
+        "difficulty": 2,
+        "recipes": [
+          { "name": "Protein Base", "ingredient": "Red Lentils", "amount": "250g" },
+          { "name": "Aromatics", "ingredient": "Garlic", "amount": "3 cloves" },
+          { "name": "Vegetables", "ingredient": "Carrots", "amount": "2 pcs" },
+          { "name": "Liquid", "ingredient": "Vegetable Broth", "amount": "1 liter" }
+        ],
+        "image": "/lentil-soup.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Mushroom Risotto",
+        "unlocked": false,
+        "difficulty": 4,
+        "recipes": [
+          { "name": "Rice", "ingredient": "Arborio Rice", "amount": "300g" },
+          { "name": "Mushrooms", "ingredient": "Mixed Mushrooms", "amount": "350g" },
+          { "name": "Aromatics", "ingredient": "Shallots", "amount": "2 pcs" },
+          { "name": "Liquid", "ingredient": "Vegetable Stock", "amount": "1 liter" }
+        ],
+        "image": "/mushroom-risotto.jpg"
+      },
+      {
+        "id": 6,
+        "name": "Vegan Dessert",
+        "unlocked": false,
+        "difficulty": 3,
+        "recipes": [
+          { "name": "Base", "ingredient": "Dates", "amount": "200g" },
+          { "name": "Filling", "ingredient": "Cashews", "amount": "300g" },
+          { "name": "Flavor", "ingredient": "Cocoa Powder", "amount": "40g" },
+          { "name": "Sweetener", "ingredient": "Maple Syrup", "amount": "60ml" }
+        ],
+        "image": "/vegan-dessert.jpg"
+      }
+    ]
+  }
+] 

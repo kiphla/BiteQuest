@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Container,
@@ -18,8 +18,9 @@ import {
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ingredientsData from './ingredients.js';
+import cuisinePathsData from '../data/cuisinePaths.json';
 
 interface Ingredient {
     ingredient: string;
@@ -46,92 +47,45 @@ interface Lesson {
     image: string;
 }
 
-const lessons: Lesson[] = [
-    {
-        id: 1,
-        name: 'Spiced Potatoes',
-        unlocked: true,
-        difficulty: 2,
-        recipes: [
-            { name: 'Boiled Potatoes', ingredient: 'Potatoes', amount: '500g' },
-            { name: 'Spice Mix', ingredient: 'Spice Mix', amount: '2 tsp' },
-            { name: 'Olive Oil', ingredient: 'Olive Oil', amount: '40ml' },
-        ],
-        image: '/spicedpotato.jpg',
-    },
-    {
-        id: 2,
-        name: 'Tabbouleh',
-        unlocked: true,
-        difficulty: 3,
-        recipes: [
-            { name: 'Parsley', ingredient: 'Parsley', amount: '1 bunch' },
-            { name: 'Lemon Dressing', ingredient: 'Lemons', amount: '1 pc' },
-            { name: 'Grain Cook', ingredient: 'Bulgur', amount: '100g' },
-        ],
-        image: '/tabbouleh.jpg',
-    },
-    {
-        id: 3,
-        name: 'Fattoush',
-        unlocked: true,
-        difficulty: 3,
-        recipes: [
-            { name: 'Pita Bread', ingredient: 'Pita Bread', amount: '2 pcs' },
-            { name: 'Cherry Tomatoes', ingredient: 'Cherry Tomatoes', amount: '200g' },
-            { name: 'Onions', ingredient: 'Onions', amount: '1/2 pc' },
-            { name: 'Cucumber', ingredient: 'Cucumbers', amount: '1 pc' },
-            { name: 'Olive Oil', ingredient: 'Olive Oil', amount: '40ml' },
-            { name: 'Lemon', ingredient: 'Lemons', amount: '1 pc' },
-            { name: 'Fresh Garlic', ingredient: 'Fresh Garlic', amount: '1 clove' },
-        ],
-        image: '/fattoush.jpg',
-    },
-    {
-        id: 4,
-        name: 'Mujadara',
-        unlocked: false,
-        difficulty: 4,
-        recipes: [
-            { name: 'Lentils', ingredient: 'Lentils', amount: '200g' },
-            { name: 'Onions', ingredient: 'Onions', amount: '2 pcs' },
-            { name: 'Rice', ingredient: 'Rice', amount: '150g' },
-        ],
-        image: '/mujadara.jpg',
-    },
-    {
-        id: 5,
-        name: 'Kofta',
-        unlocked: false,
-        difficulty: 4,
-        recipes: [
-            { name: 'Mix Meat', ingredient: 'Ground Meat', amount: '300g' },
-            { name: 'Form Skewers', ingredient: 'Skewers', amount: '4 pcs' },
-            { name: 'Grill', ingredient: 'Oil', amount: '1 tbsp' },
-        ],
-        image: '/kofta.png',
-    },
-    {
-        id: 6,
-        name: 'Shish Tawook',
-        unlocked: false,
-        difficulty: 3,
-        recipes: [
-            { name: 'Marinate Chicken', ingredient: 'Chicken', amount: '400g' },
-            { name: 'Skewer Prep', ingredient: 'Skewers', amount: '4 pcs' },
-            { name: 'Grill', ingredient: 'Oil', amount: '1 tbsp' },
-        ],
-        image: '/shish_tawook.jpg',
-    },
-];
+interface CuisinePath {
+    id: string;
+    name: string;
+    image: string;
+    progress: number;
+    totalLessons: number;
+    description: string;
+    lessons: Lesson[];
+}
 
 export default function LessonPath() {
     const theme = useTheme();
     const navigate = useNavigate();
+    const { cuisineId } = useParams();
     const [openLesson, setOpenLesson] = React.useState<Lesson | null>(null);
     const [showLockedModal, setShowLockedModal] = React.useState(false);
     const [selectedLockedLesson, setSelectedLockedLesson] = React.useState<Lesson | null>(null);
     const [tokens, setTokens] = React.useState(5); // Starting with 5 tokens
+    const [currentCuisine, setCurrentCuisine] = useState<CuisinePath | null>(null);
+    const [lessons, setLessons] = useState<Lesson[]>([]);
+
+    // Get the cuisine data based on the cuisineId parameter
+    useEffect(() => {
+        // Default to "mediterranean-magic" if no cuisineId is provided
+        const id = cuisineId || "mediterranean-magic";
+        const cuisine = cuisinePathsData.find((c: CuisinePath) => c.id === id);
+        
+        if (cuisine) {
+            setCurrentCuisine(cuisine);
+            setLessons(cuisine.lessons);
+        } else {
+            // Fallback to Mediterranean cuisine if not found
+            const fallbackCuisine = cuisinePathsData.find((c: CuisinePath) => c.id === "mediterranean-magic");
+            if (fallbackCuisine) {
+                setCurrentCuisine(fallbackCuisine);
+                setLessons(fallbackCuisine.lessons);
+            }
+        }
+    }, [cuisineId]);
 
     const getAvailableQuantity = (ingredientName: string): string => {
         const pantryIngredient = ingredientsData.find(
@@ -215,7 +169,7 @@ export default function LessonPath() {
                 ? { ...lesson, unlocked: true }
                 : lesson
         );
-        lessons.splice(0, lessons.length, ...updatedLessons);
+        setLessons(updatedLessons);
 
         // Deduct one token
         setTokens(prev => prev - 1);
@@ -224,6 +178,12 @@ export default function LessonPath() {
         setShowLockedModal(false);
         setSelectedLockedLesson(null);
     };
+
+    if (!currentCuisine) {
+        return <Box sx={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Typography>Loading...</Typography>
+        </Box>;
+    }
 
     return (
         <Box sx={{ minHeight: '100vh', bgcolor: 'white', py: 6 }}>
@@ -242,7 +202,7 @@ export default function LessonPath() {
                             color: theme.palette.primary.main,
                         }}
                     >
-                        Mediterranean Journey
+                        {currentCuisine.name}
                     </Typography>
                     <Box sx={{ width: 40 }} />
                 </Box>

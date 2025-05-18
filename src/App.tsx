@@ -37,6 +37,7 @@ export default function App() {
               <Route path="/lesson" element={<Lesson />} />
               <Route path="/dashboard" element={<CookingDashboard />} />
               <Route path="/lessonpath" element={<LessonPath />} />
+              <Route path="/lessonpath/:cuisineId" element={<LessonPath />} />
               <Route path="/share" element={<Share />} />
               <Route path="/review" element={<Review />} />
               <Route path="/myprofile" element={<MyProfile />} />
