@@ -11,66 +11,31 @@ import {
     useTheme,
     CardMedia,
     Card,
-    CardActions,
     CardContent,
     Collapse,
+    Avatar,
+    Chip,
+    Fade,
+    Divider,
+    Paper,
+    Tooltip,
+    CircularProgress,
+    alpha,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ExpandCircleDown } from '@mui/icons-material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-  accordionSummaryClasses,
-} from '@mui/material/AccordionSummary';
-import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import MoreVertIcon from '@mui/icons-material/MoreVert'; 
-import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import ShareIcon from '@mui/icons-material/Share';
 import lessonContentData from '../data/lessonContent.json';
 
-interface IconButtonProps {
-    expand: boolean;
-}
-
-const Accordion = styled((props: AccordionProps) => (
-    <MuiAccordion elevation={0} square {...props} />
-))(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    '&:not(:last-child)': {
-      borderBottom: 0,
-    },
-    '&::before': {
-      display: 'none',
-    },
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-    <MuiAccordionSummary
-      expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
-      {...props}
-    />
-))(({ theme }) => ({
-    backgroundColor: 'rgba(255, 255, 255, 0.78)',
-    flexDirection: 'row-reverse',
-    [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
-    {
-        transform: 'rotate(90deg)',
-    },
-    [`& .${accordionSummaryClasses.content}`]: {
-        marginLeft: theme.spacing(1),
-    },
-    ...theme.applyStyles('light', {
-        backgroundColor: 'rgba(255, 255, 255, 0.78)',
-    }),
-}));
-  
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-    padding: theme.spacing(2),
-    borderTop: '1px solid rgba(0, 0, 0, .125)',
-    width: 'auto',
-}));
-  
 export default function Lesson() {
     const theme = useTheme();
     const navigate = useNavigate();
@@ -78,11 +43,13 @@ export default function Lesson() {
     const [activeStep, setActiveStep] = useState(0);
     const [lessonSteps, setLessonSteps] = useState([]);
     const [lessonName, setLessonName] = useState('');
-    const [activePanel, setActivePanel] = useState<'panel1' | 'panel2'>('panel1');
+    const [showNotes, setShowNotes] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [completedSteps, setCompletedSteps] = useState([]);
+    
+    console.log("Location state changed:", location.state); // Debug full state
     
     useEffect(() => {
-        console.log("Location state changed:", location.state); // Debug full state
-        
         if (location.state && location.state.lesson) {
             const { lesson } = location.state;
             console.log("Lesson data received:", lesson); // Debug lesson
@@ -134,41 +101,38 @@ export default function Lesson() {
                 setLessonSteps(lessonContentData[0].steps);
                 setLessonName(lessonContentData[0].name);
             }
+            
+            // Fake loading time for smoother transitions
+            setTimeout(() => {
+                setLoading(false);
+            }, 600);
         } else {
             // Fallback if no lesson state is provided
             console.warn('No lesson state provided, using fallback');
             setLessonSteps(lessonContentData[0].steps);
             setLessonName(lessonContentData[0].name);
+            setTimeout(() => {
+                setLoading(false);
+            }, 600);
         }
     }, [location.state]);
 
-    {/* Community notes section*/}
-    function CommunityNotes(){
-        if (activeStep > 0 && lessonSteps[activeStep]?.noteText){
-            return(
-                <Card sx={{width: 550, position: 'fixed', bottom: 100}}>
-                    <Accordion expanded={activePanel === 'panel2'} onChange={handlePanel2Change}>
-                    <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                        <Typography component="span">Community Notes</Typography>
-                    </AccordionSummary>
-                    <CardContent>
-                    <AccordionDetails>
-                    {lessonSteps[activeStep].noteRating} <br></br>
-                    {lessonSteps[activeStep].noteText} <br></br>
-                    {lessonSteps[activeStep].noteAuthor}
-                    </AccordionDetails>
-                    </CardContent>
-                    </Accordion>
-                </Card>
-            )
-        }
-        return null;
-    }
-
     const handleNext = () => {
         if (activeStep < lessonSteps.length - 1) {
+            // Mark current step as completed
+            if (!completedSteps.includes(activeStep)) {
+                setCompletedSteps(prev => [...prev, activeStep]);
+            }
+            
             setActiveStep((prev) => prev + 1);
+            // Auto-hide notes when moving to next step
+            setShowNotes(false);
         } else {
+            // Mark final step complete
+            if (!completedSteps.includes(activeStep)) {
+                setCompletedSteps(prev => [...prev, activeStep]);
+            }
+            
             navigate('/complete', { state: { lesson: { name: lessonName } } });
         }
     };
@@ -176,6 +140,8 @@ export default function Lesson() {
     const handleBack = () => {
         if (activeStep > 0) {
             setActiveStep((prev) => prev - 1);
+            // Auto-hide notes when moving to previous step
+            setShowNotes(false);
         } else {
             navigate(-1);
         }
@@ -193,15 +159,33 @@ export default function Lesson() {
         }
     };
 
-    const handlePanel2Change = (event, isExpanded) => {
-        if (isExpanded) {
-            setActivePanel('panel2');
-        } else {
-            setActivePanel('panel1');  // fallback to panel1 if collapsing panel2
-        }
-    };
-
+    // Extract primary color from theme for animations
+    const primaryColor = theme.palette.primary.main;
+    const primaryLight = theme.palette.primary.light;
+    
     // If lesson data is still loading
+    if (loading) {
+        return (
+            <Box
+                sx={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bgcolor: 'white',
+                    gap: 3
+                }}
+            >
+                <CircularProgress size={60} color="primary" thickness={4} />
+                <Typography variant="h6" color="text.secondary">
+                    Loading {lessonName || "lesson"}...
+                </Typography>
+            </Box>
+        );
+    }
+
+    // If no lesson steps are available
     if (lessonSteps.length === 0) {
         return (
             <Box
@@ -210,59 +194,158 @@ export default function Lesson() {
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    bgcolor: theme.palette.background.default,
+                    bgcolor: 'white',
+                    flexDirection: 'column',
+                    p: 3
                 }}
             >
-                <Typography>Loading lesson...</Typography>
+                <Typography variant="h6" color="error" gutterBottom>
+                    Lesson content not available
+                </Typography>
+                <Button 
+                    variant="contained" 
+                    onClick={() => navigate(-1)}
+                    startIcon={<ArrowBackIosNewIcon />}
+                    sx={{ mt: 2 }}
+                >
+                    Go Back
+                </Button>
             </Box>
         );
     }
+
+    const currentStep = lessonSteps[activeStep];
+    const hasNotes = activeStep > 0 && currentStep?.noteText;
 
     return (
         <Box
             sx={{
                 minHeight: '100vh',
-                bgcolor: theme.palette.background.default,
-                pb: 14,
+                bgcolor: 'white',
+                pb: 10,
             }}
         >
-            <Container maxWidth="sm" sx={{ pt: 4, pb: 2 }}>
-                {/* header with back button */}
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                    <IconButton onClick={handleBack}>
-                        <ArrowBackIosNewIcon />
-                    </IconButton>
-                    <Typography
-                        variant="subtitle2"
-                        sx={{
-                            flex: 1,
-                            textAlign: 'center',
+            {/* Header */}
+            <Box 
+                sx={{ 
+                    bgcolor: 'white',
+                    position: 'sticky',
+                    top: 0,
+                    zIndex: 10,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.07)',
+                }}
+            >
+                <Container maxWidth="sm">
+                    <Box sx={{ py: 1.5, display: 'flex', alignItems: 'center' }}>
+                        <IconButton 
+                            onClick={handleBack}
+                            sx={{ color: 'text.secondary' }}
+                        >
+                            <ArrowBackIosNewIcon />
+                        </IconButton>
+                        <Box sx={{ flex: 1 }}>
+                            <Typography variant="subtitle1" fontWeight="medium" noWrap textAlign="center">
+                                {lessonName}
+                            </Typography>
+                            <MobileStepper
+                                variant="progress"
+                                steps={lessonSteps.length}
+                                position="static"
+                                activeStep={activeStep}
+                                nextButton={<div />}
+                                backButton={<div />}
+                                sx={{
+                                    bgcolor: 'transparent',
+                                    '& .MuiLinearProgress-root': {
+                                        height: 5,
+                                        borderRadius: 5,
+                                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                                    }
+                                }}
+                            />
+                        </Box>
+                        <Tooltip title="Share lesson">
+                            <IconButton 
+                                onClick={handleShare}
+                                sx={{ color: 'text.secondary' }}
+                            >
+                                <ShareIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </Container>
+            </Box>
+            
+            {/* Main Content */}
+            <Container maxWidth="sm" sx={{ mt: 2, mb: 2 }}>
+                {/* Step counter */}
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
+                    <Chip 
+                        label={`Step ${activeStep + 1} of ${lessonSteps.length}`}
+                        size="small"
+                        color="primary"
+                        sx={{ 
+                            height: 24, 
                             fontWeight: 'medium',
-                            color: theme.palette.text.secondary,
+                            bgcolor: alpha(theme.palette.primary.main, 0.1),
+                            color: theme.palette.primary.main,
+                            border: 'none'
                         }}
+                    />
+                    <Typography 
+                        variant="subtitle2" 
+                        color="text.secondary"
+                        sx={{ ml: 1, flex: 1 }}
                     >
-                        Step {activeStep + 1} of {lessonSteps.length}
+                        {currentStep.title}
                     </Typography>
-                    <Box sx={{ width: 40 }} />
                 </Box>
-                <Card sx={{marginBottom: 2}}>
-                    <CardContent>
-                        {/* image for the step */}
+                
+                {/* Main card */}
+                <Card 
+                    elevation={0}
+                    sx={{ 
+                        borderRadius: 4, 
+                        overflow: 'hidden',
+                        border: `1px solid ${theme.palette.divider}`,
+                        mb: 2.5
+                    }}
+                >
+                    {/* Step image */}
+                    <Box sx={{ position: 'relative' }}>
                         <CardMedia
                             component="img"
-                            image={lessonSteps[activeStep].image}
-                            alt={lessonSteps[activeStep].title}
+                            image={currentStep.image}
+                            alt={currentStep.title}
                             sx={{
-                                width: '100%',
-                                height: 200,
+                                height: 240,
                                 objectFit: 'cover',
-                                borderRadius: 3,
-                                mb: 3,
                             }}
                         />
-                        <Accordion expanded={activePanel === 'panel1'} onChange={() => {}}>
-                        <AccordionDetails>
-                        {/* title + content */}
+                        
+                        {/* Completed step indicator */}
+                        {completedSteps.includes(activeStep) && (
+                            <Box sx={{
+                                position: 'absolute',
+                                top: 16,
+                                right: 16,
+                                bgcolor: 'success.main',
+                                color: 'white',
+                                borderRadius: '50%',
+                                width: 36,
+                                height: 36,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                boxShadow: '0 3px 6px rgba(0,0,0,0.2)'
+                            }}>
+                                <CheckCircleOutlineIcon />
+                            </Box>
+                        )}
+                    </Box>
+                    
+                    {/* Step content */}
+                    <CardContent sx={{ p: 3 }}>
                         <Typography
                             variant="h5"
                             gutterBottom
@@ -270,61 +353,196 @@ export default function Lesson() {
                                 fontFamily: '"Playfair Display", serif',
                                 fontWeight: 'bold',
                                 color: theme.palette.primary.main,
-                                textAlign: 'center',
+                                mb: 2
                             }}
                         >
-                            {lessonSteps[activeStep].title}
+                            {currentStep.title}
                         </Typography>
                         <Typography
                             variant="body1"
                             color="text.secondary"
-                            sx={{ textAlign: 'center', mb: 3 }}
+                            sx={{ mb: 3, lineHeight: 1.6 }}
                         >
-                            {lessonSteps[activeStep].content}
+                            {currentStep.content}
                         </Typography>
-                        </AccordionDetails>
-                        </Accordion>
+                        
+                        {/* Community notes button - only if notes exist */}
+                        {hasNotes && (
+                            <Box>
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    startIcon={<PeopleAltIcon />}
+                                    onClick={() => setShowNotes(!showNotes)}
+                                    sx={{ 
+                                        borderRadius: 2,
+                                        textTransform: 'none',
+                                        px: 2,
+                                        borderColor: alpha(theme.palette.primary.main, 0.3),
+                                        '&:hover': {
+                                            borderColor: theme.palette.primary.main
+                                        }
+                                    }}
+                                >
+                                    {showNotes ? 'Hide Community Notes' : 'View Community Notes'}
+                                </Button>
+                            </Box>
+                        )}
                     </CardContent>
-                    <CommunityNotes />
                 </Card>
+                
+                {/* Community Notes Section */}
+                {hasNotes && (
+                    <Collapse in={showNotes} timeout="auto">
+                        <Paper
+                            elevation={0}
+                            sx={{
+                                p: 2.5,
+                                borderRadius: 4,
+                                bgcolor: alpha('#FFFDE7', 0.7),
+                                border: `1px solid ${alpha(theme.palette.warning.light, 0.4)}`,
+                                mb: 2
+                            }}
+                        >
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                <LightbulbIcon sx={{ color: theme.palette.warning.main, mr: 1.5 }} />
+                                <Typography variant="subtitle1" fontWeight="bold">
+                                    Community Tips
+                                </Typography>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'flex-start',
+                                    mb: 1.5
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        color: 'success.main',
+                                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                                        px: 1.5,
+                                        py: 0.5,
+                                        borderRadius: 4,
+                                        mb: 1
+                                    }}
+                                >
+                                    <ThumbUpOffAltIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                                    <Typography variant="caption" fontWeight="medium">
+                                        {currentStep.noteRating}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    fontStyle: 'italic',
+                                    color: 'text.primary',
+                                    mb: 0.5
+                                }}
+                            >
+                                "{currentStep.noteText}"
+                            </Typography>
+                            <Typography
+                                variant="caption"
+                                sx={{
+                                    color: 'text.secondary',
+                                    display: 'block',
+                                    textAlign: 'right',
+                                    fontWeight: 'medium'
+                                }}
+                            >
+                                {currentStep.noteAuthor}
+                            </Typography>
+                        </Paper>
+                    </Collapse>
+                )}
+                
+                {/* Step navigation */}
+                <List sx={{ mt: 2, bgcolor: 'background.paper', borderRadius: 2 }}>
+                    {lessonSteps.map((step, index) => (
+                        <ListItem
+                            button
+                            key={index}
+                            onClick={() => {
+                                setActiveStep(index);
+                                setShowNotes(false);
+                            }}
+                            selected={index === activeStep}
+                            sx={{
+                                borderRadius: 2,
+                                mb: 0.5,
+                                border: index === activeStep ? `1px solid ${alpha(theme.palette.primary.main, 0.2)}` : 'none',
+                                bgcolor: index === activeStep ? alpha(theme.palette.primary.main, 0.05) : 'transparent',
+                                opacity: index > activeStep ? 0.5 : 1,
+                                '&.Mui-selected': {
+                                    bgcolor: alpha(theme.palette.primary.main, 0.08),
+                                }
+                            }}
+                        >
+                            <ListItemIcon sx={{ minWidth: 40 }}>
+                                <Avatar
+                                    sx={{
+                                        width: 28,
+                                        height: 28,
+                                        bgcolor: completedSteps.includes(index) 
+                                            ? 'success.main' 
+                                            : index === activeStep 
+                                                ? 'primary.main' 
+                                                : 'grey.300',
+                                        fontSize: 14
+                                    }}
+                                >
+                                    {index + 1}
+                                </Avatar>
+                            </ListItemIcon>
+                            <ListItemText 
+                                primary={step.title.replace(/^Step \d+: /, '')}
+                                primaryTypographyProps={{ 
+                                    variant: 'body2',
+                                    fontWeight: index === activeStep ? 'medium' : 'regular',
+                                    noWrap: true
+                                }}
+                            />
+                            {index === activeStep && (
+                                <ChevronRightIcon color="primary" />
+                            )}
+                        </ListItem>
+                    ))}
+                </List>
             </Container>
 
-            {/* sticky footer */}
+            {/* Sticky footer */}
             <Box
                 sx={{
                     position: 'fixed',
                     bottom: 0,
                     left: 0,
                     width: '100%',
-                    bgcolor: theme.palette.background.default,
+                    bgcolor: 'white',
                     borderTop: `1px solid ${theme.palette.divider}`,
                     px: 2,
                     py: 1.5,
+                    zIndex: 10
                 }}
             >
-                <MobileStepper
-                    variant="dots"
-                    steps={lessonSteps.length}
-                    position="static"
-                    activeStep={activeStep}
-                    nextButton={<div />}
-                    backButton={<div />}
-                    sx={{
-                        justifyContent: 'center',
-                        display: 'flex',
-                        bgcolor: 'transparent',
-                        mb: 1,
-                    }}
-                />
-                <Button
-                    variant="contained"
-                    size="large"
-                    onClick={handleNext}
-                    fullWidth
-                    sx={{ py: 1.5, borderRadius: 3 }}
-                >
-                    {activeStep === lessonSteps.length - 1 ? 'Finish Lesson' : 'Continue'}
-                </Button>
+                <Container maxWidth="sm">
+                    <Button
+                        variant="contained"
+                        size="large"
+                        onClick={handleNext}
+                        fullWidth
+                        sx={{ 
+                            py: 1.5, 
+                            borderRadius: 3,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        }}
+                    >
+                        {activeStep === lessonSteps.length - 1 ? 'Finish Lesson' : 'Continue'}
+                    </Button>
+                </Container>
             </Box>
         </Box>
     );
