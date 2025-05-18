@@ -11,12 +11,12 @@ import {
     IconButton,
     useTheme,
     Paper,
-    Toolbar,
     Fade,
     Button,
     Chip,
     Divider,
-    Rating
+    Rating,
+    Fab
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -28,6 +28,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import GroupIcon from '@mui/icons-material/Group';
+import AddIcon from '@mui/icons-material/Add';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Mock user data
@@ -102,14 +104,15 @@ export default function Profile() {
             pb: 8,
             position: 'relative'
         }}>
-            {/* Back button only */}
+            {/* Back button */}
             <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 10 }}>
                 <IconButton 
                     edge="start" 
                     onClick={() => navigate(-1)}
                     sx={{ 
                         bgcolor: 'rgba(255,255,255,0.8)',
-                        '&:hover': { bgcolor: 'white' }
+                        '&:hover': { bgcolor: 'white' },
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
                     }}
                 >
                     <ArrowBackIosNewIcon />
@@ -118,10 +121,10 @@ export default function Profile() {
 
             {/* Profile Header with stats */}
             <Box sx={{ 
-                background: alpha('#d6004c', 0.04),
+                background: `linear-gradient(165deg, ${alpha('#d6004c', 0.08)} 0%, ${alpha('#d6004c', 0.02)} 100%)`,
                 pb: 3, 
                 mb: 3, 
-                pt: 3,
+                pt: 6,
                 boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
             }}>
                 <Container maxWidth="sm">
@@ -134,9 +137,9 @@ export default function Profile() {
                             src={userData.avatar} 
                             alt={userData.name}
                             sx={{ 
-                                width: 90, 
-                                height: 90,
-                                border: `3px solid white`,
+                                width: 100, 
+                                height: 100,
+                                border: `4px solid white`,
                                 boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                                 mb: 2
                             }}
@@ -149,7 +152,7 @@ export default function Profile() {
                         <Typography 
                             variant="body2" 
                             color="text.secondary"
-                            sx={{ mb: 2 }}
+                            sx={{ mb: 3 }}
                         >
                             {userData.bio}
                         </Typography>
@@ -159,84 +162,118 @@ export default function Profile() {
                             justifyContent: 'center', 
                             gap: 4, 
                             mb: 3,
-                            width: '100%'
+                            width: '100%',
+                            bgcolor: 'white',
+                            py: 2,
+                            px: 3,
+                            borderRadius: 3,
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
                         }}>
-                            <Box sx={{ textAlign: 'center' }}>
+                            <Box sx={{ 
+                                textAlign: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                '&:hover': { 
+                                    transform: 'translateY(-2px)'
+                                }
+                            }}>
                                 <Typography variant="h6" fontWeight="bold">
                                     {userData.completedLessons}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography 
+                                    variant="body2" 
+                                    sx={{ 
+                                        color: '#d6004c',
+                                        textDecoration: 'underline',
+                                        textUnderlineOffset: '2px',
+                                        textDecorationColor: alpha('#d6004c', 0.5),
+                                        fontWeight: 500
+                                    }}
+                                >
                                     Recipes
                                 </Typography>
                             </Box>
                             
                             <Divider orientation="vertical" flexItem />
                             
-                            <Box sx={{ textAlign: 'center' }}>
-                                <Typography variant="h6" fontWeight="bold">
+                            <Box 
+                                sx={{ 
+                                    textAlign: 'center',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s',
+                                    '&:hover': { 
+                                        transform: 'translateY(-2px)'
+                                    }
+                                }}
+                                onClick={() => navigate('/friends')}
+                            >
+                                <Typography variant="h6" fontWeight="bold" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     {userData.followerCount}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Followers
+                                <Typography 
+                                    variant="body2" 
+                                    sx={{ 
+                                        color: '#d6004c',
+                                        textDecoration: 'underline',
+                                        textUnderlineOffset: '2px',
+                                        textDecorationColor: alpha('#d6004c', 0.5),
+                                        fontWeight: 500
+                                    }}
+                                >
+                                    Friends
                                 </Typography>
                             </Box>
                             
                             <Divider orientation="vertical" flexItem />
                             
-                            <Box sx={{ textAlign: 'center' }}>
+                            <Box sx={{ 
+                                textAlign: 'center',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s',
+                                '&:hover': { 
+                                    transform: 'translateY(-2px)'
+                                }
+                            }}>
                                 <Typography variant="h6" fontWeight="bold">
                                     {userData.followingCount}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography 
+                                    variant="body2" 
+                                    sx={{ 
+                                        color: '#d6004c',
+                                        textDecoration: 'underline',
+                                        textUnderlineOffset: '2px',
+                                        textDecorationColor: alpha('#d6004c', 0.5),
+                                        fontWeight: 500
+                                    }}
+                                >
                                     Following
                                 </Typography>
                             </Box>
                         </Box>
-                        
-                        <Button
-                            variant="contained"
-                            size="medium"
-                            startIcon={<PhotoIcon />}
-                            onClick={navigateToShare}
-                            sx={{ 
-                                borderRadius: 8,
-                                textTransform: 'none',
-                                px: 3,
-                                py: 1,
-                                boxShadow: '0 4px 8px rgba(214,0,76,0.3)',
-                                bgcolor: '#d6004c',
-                                '&:hover': {
-                                    bgcolor: alpha('#d6004c', 0.9),
-                                    boxShadow: '0 6px 12px rgba(214,0,76,0.4)',
-                                },
-                                mb: 2
-                            }}
-                        >
-                            Share New Recipe
-                        </Button>
-                        
-                        <Button
-                            variant="outlined"
-                            size="medium"
-                            onClick={() => navigate('/friends')}
-                            sx={{ 
-                                borderRadius: 8,
-                                textTransform: 'none',
-                                px: 3,
-                                py: 1,
-                                borderColor: '#d6004c',
-                                color: '#d6004c',
-                                '&:hover': {
-                                    borderColor: '#d6004c',
-                                    bgcolor: alpha('#d6004c', 0.05),
-                                }
-                            }}
-                        >
-                            View Friends
-                        </Button>
                     </Box>
                 </Container>
             </Box>
+            
+            {/* Floating action button for adding new recipe */}
+            <Fab
+                color="primary"
+                aria-label="add"
+                onClick={navigateToShare}
+                sx={{
+                    position: 'fixed',
+                    bottom: 24,
+                    right: 24,
+                    bgcolor: '#d6004c',
+                    '&:hover': {
+                        bgcolor: alpha('#d6004c', 0.9),
+                    },
+                    zIndex: 5,
+                    boxShadow: '0 4px 12px rgba(214,0,76,0.3)',
+                }}
+            >
+                <AddIcon />
+            </Fab>
             
             {/* Shared Recipes Content with improved cards */}
             <Container maxWidth="sm">
@@ -262,8 +299,7 @@ export default function Profile() {
                     {sharedContent.length > 0 ? (
                         <Grid container spacing={3}>
                             {sharedContent.map((post, index) => (
-                                // @ts-ignore - Suppressing Grid component prop type issues
-                                <Grid item xs={12} sm={6} key={index}>
+                                <Grid item xs={12} sm={6} key={index} component="div">
                                     <Fade in={true} timeout={300 + index * 100}>
                                         <Card 
                                             elevation={0} 
