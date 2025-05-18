@@ -27,8 +27,6 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <IPhoneTopBar />
-        {/* User profile icon in top right, not absolute */}
 
         <Box sx={{ flex: 1 }}>
           <BrowserRouter>
