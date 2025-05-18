@@ -4,34 +4,30 @@ import {
     Container,
     Typography,
     Avatar,
-    Tabs,
-    Tab,
     Grid,
     Card,
     CardMedia,
     CardContent,
-    CardActionArea,
-    Chip,
-    Divider,
-    Button,
     IconButton,
     useTheme,
     Paper,
-    AppBar,
     Toolbar,
-    Badge,
+    Fade,
+    Button,
+    Chip,
+    Divider,
+    Rating
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import EditIcon from '@mui/icons-material/Edit';
-import ShareIcon from '@mui/icons-material/Share';
-import RestaurantIcon from '@mui/icons-material/Restaurant';
-import CollectionsIcon from '@mui/icons-material/Collections';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PhotoIcon from '@mui/icons-material/Photo';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import ShareIcon from '@mui/icons-material/Share';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Mock user data
@@ -39,74 +35,33 @@ const userData = {
     name: "Jane Doe",
     username: "@janecooks",
     avatar: "/avatar.jpg",
-    bio: "Passionate home cook exploring world cuisines. Love to experiment with new flavors!",
-    level: "Amateur Chef",
+    bio: "Passionate home cook exploring world cuisines",
     completedLessons: 12,
-    followers: 248,
-    following: 156,
-    achievements: [
-        "Pasta Pro", 
-        "Dessert Master", 
-        "Asian Explorer"
-    ]
+    followerCount: 243,
+    followingCount: 185
 };
-
-// Mock shared content data
-const sharedContent = [
-    {
-        id: 1,
-        image: "/stir-fry-complete.jpg",
-        lessonName: "Simple Stir Fry",
-        cuisineType: "Asian Cuisine",
-        comment: "Loved making this! The vegetables stayed so crisp and colorful.",
-        likes: 24,
-        timestamp: "2 days ago"
-    },
-    {
-        id: 2,
-        image: "/fattoush.jpg",
-        lessonName: "Fattoush Salad",
-        cuisineType: "Mediterranean Magic",
-        comment: "So fresh and zesty! Perfect for summer evenings.",
-        likes: 36,
-        timestamp: "1 week ago"
-    },
-    {
-        id: 3,
-        image: "/spring-rolls.jpg",
-        lessonName: "Spring Rolls",
-        cuisineType: "Asian Cuisine",
-        comment: "First time making these and they turned out great!",
-        likes: 19,
-        timestamp: "2 weeks ago"
-    }
-];
-
-// Mock saved recipes
-const savedRecipes = [
-    {
-        id: 1,
-        image: "/hummus.jpg",
-        name: "Hummus",
-        cuisine: "Mediterranean Magic"
-    },
-    {
-        id: 2,
-        image: "/sushi.jpg",
-        name: "Sushi Basics",
-        cuisine: "Asian Cuisine"
-    }
-];
 
 // Local storage key for shared content
 const SHARED_CONTENT_KEY = 'bitequest_shared_content';
+
+// Define type for shared content
+interface SharedContent {
+    image: string;
+    lessonName: string;
+    cuisineType: string;
+    comment: string;
+    timestamp?: string;
+    likes?: number;
+    difficulty?: number;
+    cookingTime?: string;
+    tags?: string[];
+}
 
 export default function Profile() {
     const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
-    const [tabValue, setTabValue] = useState(0);
-    const [sharedContent, setSharedContent] = useState([]);
+    const [sharedContent, setSharedContent] = useState<SharedContent[]>([]);
     
     // Load shared content from local storage
     const loadSharedContent = () => {
@@ -135,28 +90,24 @@ export default function Profile() {
             loadSharedContent();
         }
     }, [location.state]);
-
-    const handleTabChange = (event, newValue) => {
-        setTabValue(newValue);
-    };
     
     const navigateToShare = () => {
         navigate('/share');
     };
 
     return (
-        <Box sx={{ bgcolor: '#f5f5f5', minHeight: '100vh', pb: 8 }}>
-            {/* App Bar */}
-            <AppBar 
-                position="static" 
-                color="default" 
-                elevation={0}
-                sx={{ 
-                    borderBottom: `1px solid ${theme.palette.divider}`,
-                    bgcolor: 'white'
-                }}
-            >
-                <Container maxWidth="md">
+        <Box sx={{ 
+            bgcolor: '#f5f7fa', 
+            minHeight: '100vh', 
+            pb: 8,
+        }}>
+            {/* Simple header with back button */}
+            <Box sx={{ 
+                bgcolor: 'white',
+                borderBottom: `1px solid ${theme.palette.divider}`,
+                boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+            }}>
+                <Container maxWidth="sm">
                     <Toolbar sx={{ px: { xs: 0 } }}>
                         <IconButton 
                             edge="start" 
@@ -168,164 +119,326 @@ export default function Profile() {
                         <Typography 
                             variant="h6" 
                             sx={{ 
-                                fontWeight: 'medium',
-                                flex: 1
+                                fontWeight: 'bold',
+                                flex: 1,
+                                letterSpacing: 0.5,
                             }}
                         >
-                            Profile
+                            My Cooking Gallery
                         </Typography>
-                        {tabValue === 0 && sharedContent.length > 0 && (
-                            <IconButton onClick={loadSharedContent} sx={{ mr: 1 }}>
-                                <RestaurantIcon />
+                        {sharedContent.length > 0 && (
+                            <IconButton onClick={loadSharedContent}>
+                                <RefreshIcon />
                             </IconButton>
                         )}
-                        <IconButton>
-                            <EditIcon />
-                        </IconButton>
                     </Toolbar>
                 </Container>
-            </AppBar>
+            </Box>
 
-            {/* Profile Header */}
-            <Box sx={{ bgcolor: 'white', pb: 2 }}>
-                <Container maxWidth="md">
-                    <Box sx={{ pt: 3, display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center' }}>
+            {/* Profile Header with stats */}
+            <Box sx={{ 
+                background: alpha('#d6004c', 0.04),
+                pb: 3, 
+                mb: 3, 
+                pt: 3,
+                boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
+            }}>
+                <Container maxWidth="sm">
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        alignItems: 'center',
+                    }}>
                         <Avatar 
                             src={userData.avatar} 
                             alt={userData.name}
                             sx={{ 
-                                width: 100, 
-                                height: 100,
-                                border: `3px solid ${theme.palette.primary.main}`,
-                                boxShadow: `0 4px 14px ${alpha(theme.palette.primary.main, 0.2)}`,
-                                mr: { sm: 4 },
-                                mb: { xs: 2, sm: 0 }
+                                width: 90, 
+                                height: 90,
+                                border: `3px solid white`,
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                mb: 2
                             }}
                         />
                         
-                        <Box sx={{ textAlign: { xs: 'center', sm: 'left' }, flex: 1 }}>
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                {userData.name}
-                            </Typography>
-                            <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                                {userData.username}
-                            </Typography>
-                            <Typography variant="body2" sx={{ mt: 1, mb: 2 }}>
-                                {userData.bio}
-                            </Typography>
+                        <Typography variant="h5" fontWeight="bold" gutterBottom>
+                            {userData.name}
+                        </Typography>
+                        
+                        <Typography 
+                            variant="body2" 
+                            color="text.secondary"
+                            sx={{ mb: 2 }}
+                        >
+                            {userData.bio}
+                        </Typography>
+
+                        <Box sx={{ 
+                            display: 'flex', 
+                            justifyContent: 'center', 
+                            gap: 4, 
+                            mb: 3,
+                            width: '100%'
+                        }}>
+                            <Box sx={{ textAlign: 'center' }}>
+                                <Typography variant="h6" fontWeight="bold">
+                                    {userData.completedLessons}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Recipes
+                                </Typography>
+                            </Box>
                             
-                            <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' }, gap: 3 }}>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography variant="h6" fontWeight="bold">
-                                        {userData.followers}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Followers
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography variant="h6" fontWeight="bold">
-                                        {userData.following}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Following
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography variant="h6" fontWeight="bold">
-                                        {userData.completedLessons}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Recipes
-                                    </Typography>
-                                </Box>
+                            <Divider orientation="vertical" flexItem />
+                            
+                            <Box sx={{ textAlign: 'center' }}>
+                                <Typography variant="h6" fontWeight="bold">
+                                    {userData.followerCount}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Followers
+                                </Typography>
+                            </Box>
+                            
+                            <Divider orientation="vertical" flexItem />
+                            
+                            <Box sx={{ textAlign: 'center' }}>
+                                <Typography variant="h6" fontWeight="bold">
+                                    {userData.followingCount}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    Following
+                                </Typography>
                             </Box>
                         </Box>
-                    </Box>
-
-                    {/* Achievements */}
-                    <Box sx={{ mt: 3, display: 'flex', overflowX: 'auto', pb: 1, gap: 1 }}>
-                        {userData.achievements.map((achievement, index) => (
-                            <Chip 
-                                key={index}
-                                icon={<EmojiEventsIcon sx={{ color: theme.palette.warning.main }} />}
-                                label={achievement}
-                                sx={{ 
-                                    bgcolor: alpha(theme.palette.warning.main, 0.1),
-                                    borderColor: theme.palette.warning.main,
-                                    fontWeight: 'medium',
-                                    px: 1
-                                }}
-                                variant="outlined"
-                            />
-                        ))}
+                        
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            startIcon={<PhotoIcon />}
+                            onClick={navigateToShare}
+                            sx={{ 
+                                borderRadius: 8,
+                                textTransform: 'none',
+                                px: 3,
+                                py: 1,
+                                boxShadow: '0 4px 8px rgba(214,0,76,0.3)',
+                                bgcolor: '#d6004c',
+                                '&:hover': {
+                                    bgcolor: alpha('#d6004c', 0.9),
+                                    boxShadow: '0 6px 12px rgba(214,0,76,0.4)',
+                                }
+                            }}
+                        >
+                            Share New Recipe
+                        </Button>
                     </Box>
                 </Container>
             </Box>
             
-            {/* Tabs Navigation */}
-            <Box sx={{ bgcolor: 'white', borderBottom: `1px solid ${theme.palette.divider}` }}>
-                <Container maxWidth="md">
-                    <Tabs 
-                        value={tabValue} 
-                        onChange={handleTabChange}
-                        variant="fullWidth"
-                        sx={{
-                            '& .MuiTab-root': {
-                                minWidth: 'unset',
-                                fontWeight: 'medium',
-                                fontSize: '0.9rem',
-                            }
+            {/* Shared Recipes Content with improved cards */}
+            <Container maxWidth="sm">
+                <Box sx={{ mb: 3 }}>
+                    <Typography 
+                        variant="h5" 
+                        fontWeight="bold" 
+                        sx={{ 
+                            mb: 3,
+                            display: 'flex',
+                            alignItems: 'center'
                         }}
                     >
-                        <Tab icon={<CollectionsIcon />} label="Shared" />
-                        <Tab icon={<BookmarkIcon />} label="Saved" />
-                        <Tab icon={<RestaurantIcon />} label="Recipes" />
-                    </Tabs>
-                </Container>
-            </Box>
-            
-            {/* Tab Content */}
-            <Container maxWidth="md" sx={{ mt: 3 }}>
-                {/* Shared Content Tab */}
-                {tabValue === 0 && (
-                    <>
-                        {sharedContent.length > 0 ? (
-                            <Grid container spacing={2}>
-                                {sharedContent.map((post, index) => (
-                                    <Grid item xs={12} sm={6} md={4} key={index}>
+                        <RestaurantIcon 
+                            sx={{ 
+                                mr: 1, 
+                                color: '#d6004c' 
+                            }} 
+                        />
+                        My Culinary Creations
+                    </Typography>
+                    
+                    {sharedContent.length > 0 ? (
+                        <Grid container spacing={3}>
+                            {sharedContent.map((post, index) => (
+                                // @ts-ignore - Suppressing Grid component prop type issues
+                                <Grid item xs={12} sm={6} key={index}>
+                                    <Fade in={true} timeout={300 + index * 100}>
                                         <Card 
                                             elevation={0} 
                                             sx={{ 
-                                                borderRadius: 3, 
+                                                borderRadius: 4, 
                                                 overflow: 'hidden',
-                                                border: `1px solid ${theme.palette.divider}`
+                                                border: `1px solid ${theme.palette.divider}`,
+                                                mb: 1,
+                                                transition: 'all 0.3s ease',
+                                                '&:hover': {
+                                                    transform: 'translateY(-8px)',
+                                                    boxShadow: '0 12px 20px rgba(0,0,0,0.12)'
+                                                }
                                             }}
                                         >
-                                            <CardMedia
-                                                component="img"
-                                                height="160"
-                                                image={post.image}
-                                                alt={post.lessonName}
-                                            />
-                                            <CardContent>
-                                                <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-                                                    {post.lessonName}
-                                                </Typography>
-                                                <Typography variant="caption" color="text.secondary" gutterBottom component="div">
-                                                    {post.cuisineType} • {post.timestamp || 'Just now'}
-                                                </Typography>
-                                                <Typography variant="body2" sx={{ mt: 1 }}>
-                                                    {post.comment}
-                                                </Typography>
+                                            <Box sx={{ position: 'relative' }}>
+                                                <CardMedia
+                                                    component="img"
+                                                    height="200"
+                                                    image={post.image}
+                                                    alt={post.lessonName}
+                                                    sx={{ 
+                                                        objectFit: 'cover',
+                                                        filter: 'brightness(0.9)'
+                                                    }}
+                                                />
+                                                <Box 
+                                                    sx={{ 
+                                                        position: 'absolute', 
+                                                        top: 12, 
+                                                        right: 12,
+                                                        display: 'flex',
+                                                        gap: 1
+                                                    }}
+                                                >
+                                                    {post.tags && post.tags.slice(0, 2).map((tag, i) => (
+                                                        <Chip 
+                                                            key={i}
+                                                            label={tag}
+                                                            size="small"
+                                                            sx={{ 
+                                                                bgcolor: 'rgba(255,255,255,0.85)',
+                                                                fontWeight: 'medium',
+                                                                fontSize: '0.7rem'
+                                                            }}
+                                                        />
+                                                    ))}
+                                                </Box>
                                                 
-                                                <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <Box
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        bottom: 0,
+                                                        left: 0,
+                                                        right: 0,
+                                                        p: 1.5,
+                                                        background: 'linear-gradient(to top, rgba(0,0,0,0.7), transparent)',
+                                                        color: 'white'
+                                                    }}
+                                                >
+                                                    <Typography variant="subtitle1" fontWeight="bold">
+                                                        {post.lessonName}
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                            
+                                            <CardContent sx={{ p: 2 }}>
+                                                <Box 
+                                                    sx={{ 
+                                                        display: 'flex', 
+                                                        justifyContent: 'space-between', 
+                                                        alignItems: 'center', 
+                                                        mb: 1.5 
+                                                    }}
+                                                >
+                                                    <Chip
+                                                        label={post.cuisineType}
+                                                        size="small"
+                                                        color="primary"
+                                                        variant="outlined"
+                                                        sx={{ 
+                                                            fontSize: '0.75rem',
+                                                            height: 24,
+                                                            borderColor: '#d6004c',
+                                                            color: '#d6004c'
+                                                        }}
+                                                    />
+                                                    
+                                                    <Typography variant="caption" color="text.secondary">
+                                                        {post.timestamp || 'Just now'}
+                                                    </Typography>
+                                                </Box>
+                                                
+                                                <Box 
+                                                    sx={{ 
+                                                        display: 'flex', 
+                                                        gap: 2,
+                                                        mb: 2
+                                                    }}
+                                                >
+                                                    {post.difficulty && (
+                                                        <Box 
+                                                            sx={{ 
+                                                                display: 'flex', 
+                                                                alignItems: 'center', 
+                                                                gap: 0.5 
+                                                            }}
+                                                        >
+                                                            <LocalFireDepartmentIcon 
+                                                                color="error" 
+                                                                sx={{ fontSize: 18 }} 
+                                                            />
+                                                            <Rating 
+                                                                value={post.difficulty} 
+                                                                max={3} 
+                                                                readOnly 
+                                                                size="small"
+                                                                icon={<LocalFireDepartmentIcon fontSize="inherit" />}
+                                                                emptyIcon={<LocalFireDepartmentIcon fontSize="inherit" sx={{ opacity: 0.3 }} />}
+                                                            />
+                                                        </Box>
+                                                    )}
+                                                    
+                                                    {post.cookingTime && (
+                                                        <Box 
+                                                            sx={{ 
+                                                                display: 'flex', 
+                                                                alignItems: 'center', 
+                                                                gap: 0.5 
+                                                            }}
+                                                        >
+                                                            <AccessTimeIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                                                            <Typography variant="caption" color="text.secondary">
+                                                                {post.cookingTime}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
+                                                </Box>
+                                                
+                                                {post.comment && (
+                                                    <Typography 
+                                                        variant="body2" 
+                                                        sx={{ 
+                                                            mb: 2,
+                                                            display: '-webkit-box',
+                                                            overflow: 'hidden',
+                                                            WebkitBoxOrient: 'vertical',
+                                                            WebkitLineClamp: 2,
+                                                            lineHeight: 1.5
+                                                        }}
+                                                    >
+                                                        {post.comment}
+                                                    </Typography>
+                                                )}
+                                                
+                                                <Box 
+                                                    sx={{ 
+                                                        display: 'flex', 
+                                                        justifyContent: 'space-between', 
+                                                        alignItems: 'center',
+                                                        mt: 'auto'
+                                                    }}
+                                                >
                                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                                        <IconButton size="small">
+                                                        <IconButton 
+                                                            size="small" 
+                                                            sx={{ 
+                                                                transition: 'transform 0.2s',
+                                                                '&:hover': {
+                                                                    transform: 'scale(1.1)'
+                                                                }
+                                                            }}
+                                                        >
                                                             <FavoriteIcon 
                                                                 fontSize="small" 
                                                                 sx={{ 
-                                                                    color: alpha(theme.palette.error.main, 0.9) 
+                                                                    color: '#d6004c'
                                                                 }} 
                                                             />
                                                         </IconButton>
@@ -333,115 +446,108 @@ export default function Profile() {
                                                             {post.likes || 0}
                                                         </Typography>
                                                     </Box>
-                                                    <IconButton size="small">
-                                                        <ShareIcon fontSize="small" />
+                                                    <IconButton 
+                                                        size="small"
+                                                        sx={{ 
+                                                            bgcolor: alpha('#d6004c', 0.1),
+                                                            '&:hover': {
+                                                                bgcolor: alpha('#d6004c', 0.2)
+                                                            }
+                                                        }}
+                                                    >
+                                                        <ShareIcon 
+                                                            fontSize="small" 
+                                                            sx={{ color: '#d6004c' }}
+                                                        />
                                                     </IconButton>
                                                 </Box>
                                             </CardContent>
                                         </Card>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        ) : (
-                            <Box sx={{ 
-                                textAlign: 'center', 
-                                py: 6, 
-                                display: 'flex', 
-                                flexDirection: 'column',
-                                alignItems: 'center' 
-                            }}>
-                                <Paper
-                                    elevation={0}
+                                    </Fade>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ) : (
+                        <Box sx={{ 
+                            textAlign: 'center', 
+                            py: 8, 
+                            display: 'flex', 
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            bgcolor: 'white',
+                            borderRadius: 4,
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.07)',
+                            background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+                        }}>
+                            <Paper
+                                elevation={0}
+                                sx={{ 
+                                    width: 100, 
+                                    height: 100, 
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    bgcolor: alpha('#d6004c', 0.1),
+                                    mb: 3,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                    '&::before': {
+                                        content: '""',
+                                        position: 'absolute',
+                                        top: -15,
+                                        left: -15,
+                                        right: -15,
+                                        bottom: -15,
+                                        background: 'radial-gradient(circle, rgba(255,255,255,0) 0%, rgba(214,0,76,0.1) 100%)',
+                                        animation: 'pulse 2s infinite'
+                                    },
+                                    '@keyframes pulse': {
+                                        '0%': { transform: 'scale(0.9)' },
+                                        '50%': { transform: 'scale(1.1)' },
+                                        '100%': { transform: 'scale(0.9)' }
+                                    }
+                                }}
+                            >
+                                <AddPhotoAlternateIcon 
                                     sx={{ 
-                                        width: 80, 
-                                        height: 80, 
-                                        borderRadius: '50%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        bgcolor: alpha(theme.palette.primary.main, 0.1),
-                                        mb: 3
-                                    }}
-                                >
-                                    <AddPhotoAlternateIcon 
-                                        sx={{ 
-                                            fontSize: 42, 
-                                            color: theme.palette.primary.main 
-                                        }} 
-                                    />
-                                </Paper>
-                                <Typography variant="h6" gutterBottom>
-                                    Nothing shared yet
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary" paragraph sx={{ maxWidth: 400, mx: 'auto' }}>
-                                    Complete cooking lessons and share photos of your culinary creations to see them here.
-                                </Typography>
-                                <Button 
-                                    variant="contained" 
-                                    startIcon={<PhotoIcon />}
-                                    onClick={navigateToShare}
-                                    sx={{ mt: 2, borderRadius: 2 }}
-                                >
-                                    Share a Recipe
-                                </Button>
-                            </Box>
-                        )}
-                    </>
-                )}
-                
-                {/* Saved Recipes Tab */}
-                {tabValue === 1 && (
-                    <Grid container spacing={2}>
-                        {savedRecipes.map(recipe => (
-                            <Grid item xs={12} sm={6} md={4} key={recipe.id}>
-                                <Card 
-                                    elevation={0} 
-                                    sx={{ 
-                                        borderRadius: 3, 
-                                        overflow: 'hidden',
-                                        border: `1px solid ${theme.palette.divider}`
-                                    }}
-                                >
-                                    <CardActionArea onClick={() => navigate(`/lesson/${recipe.id}`)}>
-                                        <CardMedia
-                                            component="img"
-                                            height="140"
-                                            image={recipe.image}
-                                            alt={recipe.name}
-                                        />
-                                        <CardContent>
-                                            <Typography variant="subtitle1" fontWeight="bold">
-                                                {recipe.name}
-                                            </Typography>
-                                            <Typography variant="caption" color="text.secondary">
-                                                {recipe.cuisine}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
-                )}
-                
-                {/* Recipes Tab */}
-                {tabValue === 2 && (
-                    <Box sx={{ textAlign: 'center', py: 6 }}>
-                        <RestaurantIcon sx={{ fontSize: 60, color: alpha(theme.palette.text.primary, 0.2), mb: 2 }} />
-                        <Typography variant="h6" gutterBottom>
-                            Recipe Collection
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" gutterBottom paragraph>
-                            Start creating and storing your own recipes
-                        </Typography>
-                        <Button 
-                            variant="contained" 
-                            sx={{ mt: 2, borderRadius: 2 }}
-                        >
-                            Add First Recipe
-                        </Button>
-                    </Box>
-                )}
+                                        fontSize: 52, 
+                                        color: '#d6004c',
+                                        position: 'relative',
+                                        zIndex: 1
+                                    }} 
+                                />
+                            </Paper>
+                            <Typography variant="h5" gutterBottom fontWeight="bold">
+                                Your gallery is empty
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" paragraph sx={{ maxWidth: 340, mx: 'auto', mb: 3 }}>
+                                Share photos of your culinary creations to build your personal cooking gallery and inspire others.
+                            </Typography>
+                            <Button 
+                                variant="contained" 
+                                startIcon={<PhotoIcon />}
+                                onClick={navigateToShare}
+                                sx={{ 
+                                    mt: 2, 
+                                    borderRadius: 8,
+                                    px: 4,
+                                    py: 1.2,
+                                    textTransform: 'none',
+                                    fontWeight: 'medium',
+                                    bgcolor: '#d6004c',
+                                    boxShadow: '0 6px 12px rgba(214,0,76,0.3)',
+                                    '&:hover': {
+                                        bgcolor: alpha('#d6004c', 0.9),
+                                        boxShadow: '0 8px 16px rgba(214,0,76,0.4)',
+                                    }
+                                }}
+                            >
+                                Create Your First Post
+                            </Button>
+                        </Box>
+                    )}
+                </Box>
             </Container>
         </Box>
     );
