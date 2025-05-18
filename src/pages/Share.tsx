@@ -51,6 +51,11 @@ export default function Share() {
                 ...lessonInfo,
                 ...location.state
             });
+            
+            // If coming from a completed lesson, add a default comment
+            if (location.state.completedLesson && !comment) {
+                setComment(`I just completed the ${location.state.lessonName} lesson! It turned out great!`);
+            }
         }
     }, [location.state]);
 
@@ -81,6 +86,35 @@ export default function Share() {
         // In a real app, you would upload the image and comment here
         setIsSubmitting(true);
         
+        // Create shared content object
+        const sharedItem = {
+            image: imagePreview,
+            lessonName: lessonInfo.lessonName,
+            cuisineType: formatCuisineName(lessonInfo.cuisineId),
+            comment: comment,
+            timestamp: 'Just now',
+            likes: 0
+        };
+        
+        console.log('Sharing new item:', sharedItem);
+        
+        // Load existing shared content
+        try {
+            const existingContent = JSON.parse(localStorage.getItem('bitequest_shared_content') || '[]');
+            console.log('Existing shared content:', existingContent);
+            
+            // Add new content to the beginning
+            const updatedContent = [sharedItem, ...existingContent];
+            
+            // Save back to localStorage
+            localStorage.setItem('bitequest_shared_content', JSON.stringify(updatedContent));
+            console.log('Updated shared content saved to localStorage');
+        } catch (e) {
+            console.error('Error updating shared content', e);
+            // Initialize with just this item if there was an error
+            localStorage.setItem('bitequest_shared_content', JSON.stringify([sharedItem]));
+        }
+        
         // Simulate API call
         setTimeout(() => {
             setIsSubmitting(false);
@@ -105,6 +139,17 @@ export default function Share() {
             // Fallback to main lesson path without parameter
             navigate('/lessonpath');
         }
+    };
+
+    // Navigate to profile with new shared content
+    const navigateToProfile = () => {
+        setShowSuccess(false);
+        navigate('/profile', { 
+            state: { 
+                fromShare: true,
+                timestamp: new Date().getTime() // Force state change detection
+            } 
+        });
     };
 
     // Format cuisineId for display
@@ -346,6 +391,20 @@ export default function Share() {
                 <DialogContent>
                     <Typography variant="body2" color="text.secondary" align="center">
                         Your {lessonInfo.lessonName} has been shared with the community. Thanks for sharing your culinary creation!
+                    </Typography>
+                    <Typography variant="body2" align="center" sx={{ mt: 2 }}>
+                        View all your shared recipes on your <Button 
+                            onClick={navigateToProfile}
+                            sx={{ 
+                                textTransform: 'none', 
+                                fontWeight: 'bold',
+                                p: 0,
+                                minWidth: 'auto',
+                                verticalAlign: 'baseline'
+                            }} 
+                        >
+                            profile
+                        </Button>
                     </Typography>
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'center', pb: 3 }}>

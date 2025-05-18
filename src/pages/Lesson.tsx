@@ -40,19 +40,19 @@ import lessonContentData from '../data/lessonContent.json';
 
 // Video Player component for lesson steps that include videos
 const VideoPlayer = ({ src, title, poster }) => {
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(true);
     const videoRef = React.useRef(null);
     
-    const handlePlayPause = () => {
+    // Initialize video with autoplay when component mounts
+    useEffect(() => {
         if (videoRef.current) {
-            if (isPlaying) {
-                videoRef.current.pause();
-            } else {
-                videoRef.current.play();
-            }
-            setIsPlaying(!isPlaying);
+            videoRef.current.play().catch(error => {
+                // Auto-play might be blocked by browser settings
+                console.log('Auto-play prevented:', error);
+                setIsPlaying(false);
+            });
         }
-    };
+    }, [src]);
     
     return (
         <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden' }}>
@@ -61,7 +61,11 @@ const VideoPlayer = ({ src, title, poster }) => {
                 width="100%"
                 height="240"
                 poster={poster}
-                preload="metadata"
+                preload="auto"
+                muted
+                autoPlay
+                loop
+                playsInline
                 controls
                 style={{ display: 'block', objectFit: 'cover' }}
                 onPlay={() => setIsPlaying(true)}
@@ -70,47 +74,6 @@ const VideoPlayer = ({ src, title, poster }) => {
                 <source src={src} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
-            {!isPlaying && (
-                <Box 
-                    sx={{ 
-                        position: 'absolute', 
-                        top: 0, 
-                        left: 0, 
-                        width: '100%', 
-                        height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        bgcolor: 'rgba(0,0,0,0.3)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        '&:hover': {
-                            bgcolor: 'rgba(0,0,0,0.4)'
-                        }
-                    }}
-                    onClick={handlePlayPause}
-                >
-                    <Box 
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            width: 80,
-                            height: 80,
-                            borderRadius: '50%',
-                            bgcolor: 'rgba(255, 59, 48, 0.9)',
-                            boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
-                            transition: 'all 0.2s ease',
-                            '&:hover': {
-                                transform: 'scale(1.05)',
-                                bgcolor: 'rgba(255, 59, 48, 1)'
-                            }
-                        }}
-                    >
-                        <PlayCircleOutlineIcon sx={{ fontSize: 50, color: '#fff' }} />
-                    </Box>
-                </Box>
-            )}
         </Box>
     );
 };
@@ -471,7 +434,7 @@ export default function Lesson() {
                     
                     {/* Step content */}
                     <CardContent sx={{ p: 3 }}>
-                        {hasVideo && (
+                        {/* {hasVideo && (
                             <Box sx={{ 
                                 display: 'flex', 
                                 alignItems: 'center', 
@@ -485,7 +448,7 @@ export default function Lesson() {
                                     This step includes a video demonstration
                                 </Typography>
                             </Box>
-                        )}
+                        )} */}
                         
                         <Typography
                             variant="h5"
@@ -695,19 +658,43 @@ export default function Lesson() {
                 }}
             >
                 <Container maxWidth="sm">
-                    <Button
-                        variant="contained"
-                        size="large"
-                        onClick={handleNext}
-                        fullWidth
-                        sx={{ 
-                            py: 1.5, 
-                            borderRadius: 3,
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                        }}
-                    >
-                        {activeStep === lessonSteps.length - 1 ? 'Finish Lesson' : 'Continue'}
-                    </Button>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                            variant="contained"
+                            size="large"
+                            onClick={handleNext}
+                            fullWidth
+                            sx={{ 
+                                py: 1.5, 
+                                borderRadius: 3,
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                            }}
+                        >
+                            {activeStep === lessonSteps.length - 1 ? 'Finish Lesson' : 'Continue'}
+                        </Button>
+                        {completedSteps.includes(activeStep) && (
+                            <Button
+                                variant="outlined"
+                                size="large"
+                                startIcon={<ShareIcon />}
+                                onClick={() => {
+                                    navigate('/share', {
+                                        state: {
+                                            lessonName: lessonName,
+                                            cuisineId: cuisineId,
+                                            image: currentStep.image
+                                        }
+                                    });
+                                }}
+                                sx={{ 
+                                    borderRadius: 3,
+                                    minWidth: 100
+                                }}
+                            >
+                                Share
+                            </Button>
+                        )}
+                    </Box>
                 </Container>
             </Box>
         </Box>

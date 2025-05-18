@@ -113,7 +113,9 @@ export default function Complete() {
                 lessonName: lessonDetails?.name,
                 cuisineId: lessonDetails?.cuisineId,
                 difficulty: lessonDetails?.difficulty,
-                image: lessonDetails?.image
+                image: lessonDetails?.image || lessonDetails?.steps[0]?.image,
+                // Send info that this came from a completed lesson
+                completedLesson: true
             } 
         });
     };

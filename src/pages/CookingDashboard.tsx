@@ -180,10 +180,17 @@ export default function CookingDashboard() {
                             <Avatar 
                                 src={user.avatar} 
                                 alt={user.name}
+                                onClick={() => navigate('/profile')}
                                 sx={{ 
                                     width: 36, 
                                     height: 36,
-                                    border: `2px solid ${theme.palette.primary.main}`
+                                    border: `2px solid ${theme.palette.primary.main}`,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        transform: 'scale(1.05)',
+                                        boxShadow: `0 2px 8px ${alpha(theme.palette.primary.main, 0.3)}`
+                                    },
+                                    transition: 'all 0.2s ease'
                                 }}
                             />
                         </Box>

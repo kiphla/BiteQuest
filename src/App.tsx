@@ -21,6 +21,7 @@ import Share from './pages/Share';
 import Review from './pages/Review';
 import MyProfile from './pages/MyProfile';
 import Pantry from './pages/Pantry';
+import Profile from './pages/Profile';
 
 export default function App() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
               <Route path="/share" element={<Share />} />
               <Route path="/review" element={<Review />} />
               <Route path="/myprofile" element={<MyProfile />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/pantry" element={<Pantry />} />
 
               {/* nest all onboarding steps under one provider */}
