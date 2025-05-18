@@ -100,39 +100,20 @@ export default function Profile() {
             bgcolor: '#f5f7fa', 
             minHeight: '100vh', 
             pb: 8,
+            position: 'relative'
         }}>
-            {/* Simple header with back button */}
-            <Box sx={{ 
-                bgcolor: 'white',
-                borderBottom: `1px solid ${theme.palette.divider}`,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
-            }}>
-                <Container maxWidth="sm">
-                    <Toolbar sx={{ px: { xs: 0 } }}>
-                        <IconButton 
-                            edge="start" 
-                            onClick={() => navigate(-1)}
-                            sx={{ mr: 1 }}
-                        >
-                            <ArrowBackIosNewIcon />
-                        </IconButton>
-                        <Typography 
-                            variant="h6" 
-                            sx={{ 
-                                fontWeight: 'bold',
-                                flex: 1,
-                                letterSpacing: 0.5,
-                            }}
-                        >
-                            My Cooking Gallery
-                        </Typography>
-                        {sharedContent.length > 0 && (
-                            <IconButton onClick={loadSharedContent}>
-                                <RefreshIcon />
-                            </IconButton>
-                        )}
-                    </Toolbar>
-                </Container>
+            {/* Back button only */}
+            <Box sx={{ position: 'absolute', top: 16, left: 16, zIndex: 10 }}>
+                <IconButton 
+                    edge="start" 
+                    onClick={() => navigate(-1)}
+                    sx={{ 
+                        bgcolor: 'rgba(255,255,255,0.8)',
+                        '&:hover': { bgcolor: 'white' }
+                    }}
+                >
+                    <ArrowBackIosNewIcon />
+                </IconButton>
             </Box>
 
             {/* Profile Header with stats */}
@@ -227,10 +208,31 @@ export default function Profile() {
                                 '&:hover': {
                                     bgcolor: alpha('#d6004c', 0.9),
                                     boxShadow: '0 6px 12px rgba(214,0,76,0.4)',
-                                }
+                                },
+                                mb: 2
                             }}
                         >
                             Share New Recipe
+                        </Button>
+                        
+                        <Button
+                            variant="outlined"
+                            size="medium"
+                            onClick={() => navigate('/friends')}
+                            sx={{ 
+                                borderRadius: 8,
+                                textTransform: 'none',
+                                px: 3,
+                                py: 1,
+                                borderColor: '#d6004c',
+                                color: '#d6004c',
+                                '&:hover': {
+                                    borderColor: '#d6004c',
+                                    bgcolor: alpha('#d6004c', 0.05),
+                                }
+                            }}
+                        >
+                            View Friends
                         </Button>
                     </Box>
                 </Container>

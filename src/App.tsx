@@ -22,6 +22,8 @@ import Review from './pages/Review';
 import MyProfile from './pages/MyProfile';
 import Pantry from './pages/Pantry';
 import Profile from './pages/Profile';
+import Friends from './pages/Friends';
+import FriendProfile from './pages/FriendProfile';
 
 export default function App() {
   return (
@@ -44,6 +46,8 @@ export default function App() {
               <Route path="/myprofile" element={<MyProfile />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/pantry" element={<Pantry />} />
+              <Route path="/friends" element={<Friends />} />
+              <Route path="/friendprofile/:id" element={<FriendProfile />} />
 
               {/* nest all onboarding steps under one provider */}
               <Route
