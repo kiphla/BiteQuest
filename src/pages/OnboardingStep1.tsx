@@ -62,7 +62,7 @@ export default function OnboardingStep1() {
                             color: theme.palette.text.secondary,
                         }}
                     >
-                        Step 1 of 3
+                        Step 1 of 4
                     </Typography>
                     {/* spacer */}
                     <Box sx={{ width: 40 }} />
@@ -167,7 +167,7 @@ export default function OnboardingStep1() {
             >
                 <MobileStepper
                     variant="dots"
-                    steps={3}
+                    steps={4}
                     position="static"
                     activeStep={0}
                     sx={{

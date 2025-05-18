@@ -433,6 +433,22 @@ export default function Lesson() {
                     </Box>
                     
                     {/* Step content */}
+                    {/* {hasVideo && (
+                        <Box sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            mb: 2, 
+                            p: 1.5,
+                            borderRadius: 2,
+                            bgcolor: alpha(theme.palette.error.main, 0.08)
+                        }}>
+                            <VideoLibraryIcon color="error" sx={{ mr: 1.5 }} />
+                            <Typography variant="subtitle2" color="error.main" fontWeight="medium">
+                                This step includes a video demonstration
+                            </Typography>
+                        </Box>
+                    )} */}
+                    
                     <CardContent sx={{ p: 3 }}>
                         {/* {hasVideo && (
                             <Box sx={{ 
@@ -548,17 +564,6 @@ export default function Lesson() {
                                 }}
                             >
                                 "{currentStep.noteText}"
-                            </Typography>
-                            <Typography
-                                variant="caption"
-                                sx={{
-                                    color: 'text.secondary',
-                                    display: 'block',
-                                    textAlign: 'right',
-                                    fontWeight: 'medium'
-                                }}
-                            >
-                                {currentStep.noteAuthor}
                             </Typography>
                         </Paper>
                     </Collapse>

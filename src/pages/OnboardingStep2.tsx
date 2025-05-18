@@ -48,7 +48,7 @@ export default function OnboardingStep2() {
                         <ArrowBackIosNewIcon />
                     </IconButton>
                     <Typography variant="subtitle2" sx={{ flex: 1, textAlign: 'center', fontWeight: 'medium', color: theme.palette.text.secondary }}>
-                        Step 2 of 3
+                        Step 2 of 4
                     </Typography>
                     <Box sx={{ width: 40 }} />
                 </Box>
@@ -85,7 +85,7 @@ export default function OnboardingStep2() {
             </Container>
 
             <Box sx={{ position: 'fixed', bottom: 0, left: 0, width: '100%', bgcolor: theme.palette.background.default, borderTop: `1px solid ${theme.palette.divider}`, px: 2, py: 1.5 }}>
-                <MobileStepper variant="dots" steps={3} position="static" activeStep={1} nextButton={<div />} backButton={<div />} sx={{ justifyContent: 'center', display: 'flex', bgcolor: 'transparent', mb: 1 }} />
+                <MobileStepper variant="dots" steps={4} position="static" activeStep={1} nextButton={<div />} backButton={<div />} sx={{ justifyContent: 'center', display: 'flex', bgcolor: 'transparent', mb: 1 }} />
                 <Button variant="contained" size="large" disabled={goals.length === 0} onClick={handleNext} fullWidth sx={{ py: 1.5, borderRadius: 3 }}>
                     Next
                 </Button>

@@ -24,6 +24,7 @@ import Pantry from './pages/Pantry';
 import Profile from './pages/Profile';
 import Friends from './pages/Friends';
 import FriendProfile from './pages/FriendProfile';
+import OnboardingStep4 from './pages/OnboardingStep4';
 
 export default function App() {
   return (
@@ -61,6 +62,7 @@ export default function App() {
                 <Route path="1" element={<OnboardingStep1 />} />
                 <Route path="2" element={<OnboardingStep2 />} />
                 <Route path="3" element={<OnboardingStep3 />} />
+                <Route path="4" element={<OnboardingStep4 />} />
               </Route>
             </Routes>
           </BrowserRouter>

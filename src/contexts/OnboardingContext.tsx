@@ -5,6 +5,8 @@ interface OnboardingContextType {
     setCuisines: (c: string[]) => void;
     goals: string[];
     setGoals: (g: string[]) => void;
+    dietaryRequirements: string[];
+    setDietaryRequirements: (d: string[]) => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
@@ -12,9 +14,17 @@ const OnboardingContext = createContext<OnboardingContextType | undefined>(undef
 export function OnboardingProvider({ children }: { children: ReactNode }) {
     const [cuisines, setCuisines] = useState<string[]>([]);
     const [goals, setGoals] = useState<string[]>([]);
+    const [dietaryRequirements, setDietaryRequirements] = useState<string[]>([]);
 
     return (
-        <OnboardingContext.Provider value={{ cuisines, setCuisines, goals, setGoals }}>
+        <OnboardingContext.Provider value={{ 
+            cuisines, 
+            setCuisines, 
+            goals, 
+            setGoals,
+            dietaryRequirements,
+            setDietaryRequirements
+        }}>
             {children}
         </OnboardingContext.Provider>
     );

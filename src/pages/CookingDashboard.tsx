@@ -270,7 +270,7 @@ export default function CookingDashboard() {
                                 Progress: {primary.progress}%
                             </Typography>
                             <Typography variant="body2" fontWeight="bold" color="primary">
-                                {Math.round(primary.progress / 100 * primary.totalLessons)}/{primary.totalLessons} lessons
+                                3/8 lessons
                             </Typography>
                         </Box>
                         <Box sx={{ height: 8, bgcolor: theme.palette.grey[200], borderRadius: 4, overflow: 'hidden' }}>
