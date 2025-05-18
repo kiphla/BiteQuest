@@ -20,6 +20,7 @@ import Complete from './pages/Complete';
 import Share from './pages/Share';
 import Review from './pages/Review';
 import MyProfile from './pages/MyProfile';
+import Pantry from './pages/Pantry';
 
 export default function App() {
   return (
@@ -40,7 +41,8 @@ export default function App() {
               <Route path="/lessonpath" element={<LessonPath />} />
               <Route path="/share" element={<Share />} />
               <Route path="/review" element={<Review />} />
-              <Route path="myprofile" element={<MyProfile />} />
+              <Route path="/myprofile" element={<MyProfile />} />
+              <Route path="/pantry" element={<Pantry />} />
 
               {/* nest all onboarding steps under one provider */}
               <Route

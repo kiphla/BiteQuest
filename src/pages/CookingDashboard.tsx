@@ -7,9 +7,11 @@ import {
     Button,
     ButtonBase,
     useTheme,
+    Fab,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Profile } from '../components/Profile';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function CookingDashboard() {
     const theme = useTheme();
@@ -164,6 +166,25 @@ export default function CookingDashboard() {
                     </Button>
                 </Box>
             </Container>
+
+            {/* Floating Action Button */}
+            <Fab
+                variant="extended"
+                color="primary"
+                onClick={() => navigate('/pantry')}
+                sx={{
+                    position: 'fixed',
+                    bottom: 16,
+                    right: 16,
+                    backgroundColor: theme.palette.primary.main,
+                    '&:hover': {
+                        backgroundColor: theme.palette.primary.dark,
+                    },
+                }}
+            >
+                <AddIcon sx={{ mr: 1 }} />
+                Add Ingredients
+            </Fab>
         </Box>
     );
 }
