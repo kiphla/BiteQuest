@@ -42,7 +42,7 @@ const friendsData = [
         following: true,
         content: [
             {
-                image: "https://source.unsplash.com/random/300×300/?asian-food",
+                image: "/springrolls.jpg",
                 lessonName: "Crispy Spring Rolls",
                 cuisineType: "Asian",
                 comment: "Made these spring rolls with homemade sweet chili sauce. Crispy on the outside, flavorful on the inside!",
@@ -53,7 +53,7 @@ const friendsData = [
                 tags: ["appetizer", "fried"]
             },
             {
-                image: "https://source.unsplash.com/random/300×300/?noodles",
+                image: "/spicy-ramen.jpg",
                 lessonName: "Spicy Ramen",
                 cuisineType: "Japanese",
                 comment: "My take on tonkotsu ramen with homemade chili oil. Perfect for cold evenings!",

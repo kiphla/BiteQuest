@@ -10,7 +10,7 @@
         "image": "/stir-fry.jpg"
       },
       {
-        "title": "Step 1: Prepare Your Ingredients",
+        "title": "Prepare Your Ingredients",
         "content": "Cut all vegetables into uniform, bite-sized pieces. This ensures everything cooks evenly. Have all ingredients ready before you start cooking.",
         "videoSrc": "/videos/Dice-tomatoes-Demo.mp4",
         "noteRating": "92% of users suggest: ",
@@ -18,7 +18,7 @@
         "noteAuthor": "- AsianFoodExpert"
       },
       {
-        "title": "Step 2: Make the Sauce",
+        "title": "Make the Sauce",
         "content": "Combine soy sauce, a splash of rice vinegar, minced garlic, and a touch of sugar. A good sauce is the foundation of a delicious stir fry.",
         "image": "/stir-fry-sauce.jpg",
         "noteRating": "87% of users suggest: ",
@@ -26,7 +26,7 @@
         "noteAuthor": "- ChefLin"
       },
       {
-        "title": "Step 3: Heat the Wok",
+        "title": "Heat the Wok",
         "content": "Heat your wok or pan until it's very hot before adding oil. This prevents sticking and gives food that authentic 'wok hei' flavor.",
         "image": "/hot-wok.jpg",
         "noteRating": "95% of users suggest: ",
@@ -34,7 +34,7 @@
         "noteAuthor": "- HomeChefGuru"
       },
       {
-        "title": "Step 4: Cook in the Right Order",
+        "title": "Cook in the Right Order",
         "content": "Start with aromatics (garlic, ginger), then add protein, followed by vegetables (hardest to softest), and finally the sauce. Toss continuously while cooking.",
         "image": "/stir-fry-cooking.jpg",
         "videoSrc": "/videos/Stir-frying.mp4",
@@ -43,9 +43,9 @@
         "noteAuthor": "- WokMaster"
       },
       {
-        "title": "Step 5: Serve Immediately",
+        "title": "Serve Immediately",
         "content": "Stir fries are best enjoyed right away while hot and fresh. Serve over steamed rice or noodles for a complete meal!",
-        "image": "/stir-fry-complete.jpg",
+        "image": "/stir-fry.jpg",
         "noteRating": "88% of users suggest: ",
         "noteText": "Garnish with fresh herbs like cilantro or sliced green onions for extra flavor and presentation points.",
         "noteAuthor": "- FoodStylist101"
