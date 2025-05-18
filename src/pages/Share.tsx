@@ -91,8 +91,20 @@ export default function Share() {
     // Handle success dialog close
     const handleSuccessClose = () => {
         setShowSuccess(false);
-        // Navigate back to lesson path
-        navigate(`/lessonpath/${lessonInfo.cuisineId}`);
+        navigateToLessonPath();
+    };
+
+    // Navigate back to the correct lesson path
+    const navigateToLessonPath = () => {
+        const cuisineId = lessonInfo.cuisineId;
+        
+        if (cuisineId && cuisineId !== 'unknown') {
+            // Navigate to specific cuisine path if available
+            navigate(`/lessonpath/${cuisineId}`);
+        } else {
+            // Fallback to main lesson path without parameter
+            navigate('/lessonpath');
+        }
     };
 
     // Format cuisineId for display
@@ -119,7 +131,7 @@ export default function Share() {
                 <Container maxWidth="sm">
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <IconButton 
-                            onClick={() => navigate(-1)}
+                            onClick={() => navigateToLessonPath()}
                             sx={{ color: '#fff', mr: 2 }}
                         >
                             <ArrowBackIosNewIcon />

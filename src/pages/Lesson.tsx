@@ -27,7 +27,7 @@ import {
     ListItemIcon
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -40,12 +40,15 @@ export default function Lesson() {
     const theme = useTheme();
     const navigate = useNavigate();
     const location = useLocation();
+    const params = useParams();
     const [activeStep, setActiveStep] = useState(0);
     const [lessonSteps, setLessonSteps] = useState([]);
     const [lessonName, setLessonName] = useState('');
     const [showNotes, setShowNotes] = useState(false);
     const [loading, setLoading] = useState(true);
     const [completedSteps, setCompletedSteps] = useState([]);
+    const [lessonId, setLessonId] = useState(null);
+    const [cuisineId, setCuisineId] = useState(null);
     
     console.log("Location state changed:", location.state); // Debug full state
     
@@ -54,9 +57,23 @@ export default function Lesson() {
             const { lesson } = location.state;
             console.log("Lesson data received:", lesson); // Debug lesson
             
-            // Get cuisine ID if available
-            const cuisineId = location.state.cuisineId;
-            console.log("Cuisine ID:", cuisineId); // Debug cuisineId
+            // Get cuisine ID if available from state, params, or URL
+            let currentCuisineId = location.state.cuisineId;
+            
+            // If cuisineId is not in state, try to get it from URL params or pathname
+            if (!currentCuisineId) {
+                // Check if it might be in the URL path (like /lessonpath/:cuisineId)
+                const pathMatch = location.pathname.match(/\/lessonpath\/([^\/]+)/);
+                if (pathMatch && pathMatch[1]) {
+                    currentCuisineId = pathMatch[1];
+                }
+            }
+            
+            // Set the cuisineId in state for later use
+            setCuisineId(currentCuisineId);
+            setLessonId(lesson.id);
+            
+            console.log("Cuisine ID:", currentCuisineId); // Debug cuisineId
             
             // Log all available lessons for debugging
             console.log("Available lesson content:", 
@@ -66,10 +83,10 @@ export default function Lesson() {
             // Find matching lesson content from JSON data, using both cuisineId and lesson id if available
             let lessonContent;
             
-            if (cuisineId) {
+            if (currentCuisineId) {
                 // If cuisineId is provided, first try to match by both cuisineId and lesson id
                 lessonContent = lessonContentData.find(l => 
-                    l.cuisineId === cuisineId && l.id === lesson.id
+                    l.cuisineId === currentCuisineId && l.id === lesson.id
                 );
                 
                 if (lessonContent) {
@@ -133,7 +150,12 @@ export default function Lesson() {
                 setCompletedSteps(prev => [...prev, activeStep]);
             }
             
-            navigate('/complete', { state: { lesson: { name: lessonName } } });
+            navigate('/complete', { 
+                state: { 
+                    lesson: { name: lessonName, id: lessonId },
+                    cuisineId: cuisineId 
+                } 
+            });
         }
     };
 

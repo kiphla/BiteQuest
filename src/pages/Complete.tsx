@@ -118,6 +118,19 @@ export default function Complete() {
         });
     };
 
+    // Handle navigation back to lesson path
+    const handleContinueLearning = () => {
+        const cuisineId = lessonDetails?.cuisineId;
+        
+        if (cuisineId && cuisineId !== 'unknown') {
+            // Navigate to specific cuisine path if available
+            navigate(`/lessonpath/${cuisineId}`);
+        } else {
+            // Fallback to main lesson path without parameter
+            navigate('/lessonpath');
+        }
+    };
+
     const handleRate = (rating) => {
         setUserRating(rating);
         setShowRatingSuccess(true);
@@ -196,7 +209,7 @@ export default function Complete() {
                 
                 <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
                     <IconButton 
-                        onClick={() => navigate(-1)}
+                        onClick={handleContinueLearning}
                         sx={{ 
                             color: '#fff',
                             position: 'absolute',
@@ -377,7 +390,7 @@ export default function Complete() {
                 <Button
                     variant="outlined"
                     size="large"
-                    onClick={() => navigate(`/lessonpath/${lessonDetails?.cuisineId}`)}
+                    onClick={handleContinueLearning}
                     sx={{
                         borderRadius: 3,
                         py: 1.5,
