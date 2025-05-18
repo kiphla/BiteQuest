@@ -7,7 +7,8 @@
       {
         "title": "Introduction to Stir Fry",
         "content": "Stir frying is a quick cooking technique that originated in China. It's perfect for busy weeknights when you want a flavorful, healthy meal in minutes!",
-        "image": "/stir-fry.jpg"
+        "image": "/stir-fry.jpg",
+        "videoSrc": "/videos/Dice-tomatoes-Demo.mp4"
       },
       {
         "title": "Step 1: Prepare Your Ingredients",
@@ -37,6 +38,7 @@
         "title": "Step 4: Cook in the Right Order",
         "content": "Start with aromatics (garlic, ginger), then add protein, followed by vegetables (hardest to softest), and finally the sauce. Toss continuously while cooking.",
         "image": "/stir-fry-cooking.jpg",
+        "videoSrc": "/videos/cooking-order.mp4",
         "noteRating": "91% of users suggest: ",
         "noteText": "Don't overcrowd the pan or your ingredients will steam instead of stir-fry. Cook in batches if necessary.",
         "noteAuthor": "- WokMaster"

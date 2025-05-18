@@ -34,7 +34,86 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ShareIcon from '@mui/icons-material/Share';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import lessonContentData from '../data/lessonContent.json';
+
+// Video Player component for lesson steps that include videos
+const VideoPlayer = ({ src, title, poster }) => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const videoRef = React.useRef(null);
+    
+    const handlePlayPause = () => {
+        if (videoRef.current) {
+            if (isPlaying) {
+                videoRef.current.pause();
+            } else {
+                videoRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        }
+    };
+    
+    return (
+        <Box sx={{ position: 'relative', borderRadius: 2, overflow: 'hidden' }}>
+            <video
+                ref={videoRef}
+                width="100%"
+                height="240"
+                poster={poster}
+                preload="metadata"
+                controls
+                style={{ display: 'block', objectFit: 'cover' }}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+            >
+                <source src={src} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+            {!isPlaying && (
+                <Box 
+                    sx={{ 
+                        position: 'absolute', 
+                        top: 0, 
+                        left: 0, 
+                        width: '100%', 
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bgcolor: 'rgba(0,0,0,0.3)',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                            bgcolor: 'rgba(0,0,0,0.4)'
+                        }
+                    }}
+                    onClick={handlePlayPause}
+                >
+                    <Box 
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            width: 80,
+                            height: 80,
+                            borderRadius: '50%',
+                            bgcolor: 'rgba(255, 59, 48, 0.9)',
+                            boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                            transition: 'all 0.2s ease',
+                            '&:hover': {
+                                transform: 'scale(1.05)',
+                                bgcolor: 'rgba(255, 59, 48, 1)'
+                            }
+                        }}
+                    >
+                        <PlayCircleOutlineIcon sx={{ fontSize: 50, color: '#fff' }} />
+                    </Box>
+                </Box>
+            )}
+        </Box>
+    );
+};
 
 export default function Lesson() {
     const theme = useTheme();
@@ -238,6 +317,7 @@ export default function Lesson() {
 
     const currentStep = lessonSteps[activeStep];
     const hasNotes = activeStep > 0 && currentStep?.noteText;
+    const hasVideo = currentStep?.videoSrc;
 
     return (
         <Box
@@ -321,6 +401,21 @@ export default function Lesson() {
                     >
                         {currentStep.title}
                     </Typography>
+                    
+                    {hasVideo && (
+                        <Chip
+                            icon={<VideoLibraryIcon />}
+                            label="Video"
+                            size="small"
+                            sx={{
+                                height: 24,
+                                bgcolor: alpha(theme.palette.error.main, 0.1),
+                                color: theme.palette.error.main,
+                                fontWeight: 'medium',
+                                ml: 1
+                            }}
+                        />
+                    )}
                 </Box>
                 
                 {/* Main card */}
@@ -333,17 +428,25 @@ export default function Lesson() {
                         mb: 2.5
                     }}
                 >
-                    {/* Step image */}
+                    {/* Step media (image or video) */}
                     <Box sx={{ position: 'relative' }}>
-                        <CardMedia
-                            component="img"
-                            image={currentStep.image}
-                            alt={currentStep.title}
-                            sx={{
-                                height: 240,
-                                objectFit: 'cover',
-                            }}
-                        />
+                        {hasVideo ? (
+                            <VideoPlayer 
+                                src={currentStep.videoSrc} 
+                                title={currentStep.title}
+                                poster={currentStep.image}
+                            />
+                        ) : (
+                            <CardMedia
+                                component="img"
+                                image={currentStep.image}
+                                alt={currentStep.title}
+                                sx={{
+                                    height: 240,
+                                    objectFit: 'cover',
+                                }}
+                            />
+                        )}
                         
                         {/* Completed step indicator */}
                         {completedSteps.includes(activeStep) && (
@@ -368,6 +471,22 @@ export default function Lesson() {
                     
                     {/* Step content */}
                     <CardContent sx={{ p: 3 }}>
+                        {hasVideo && (
+                            <Box sx={{ 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                mb: 2, 
+                                p: 1.5,
+                                borderRadius: 2,
+                                bgcolor: alpha(theme.palette.error.main, 0.08)
+                            }}>
+                                <VideoLibraryIcon color="error" sx={{ mr: 1.5 }} />
+                                <Typography variant="subtitle2" color="error.main" fontWeight="medium">
+                                    This step includes a video demonstration
+                                </Typography>
+                            </Box>
+                        )}
+                        
                         <Typography
                             variant="h5"
                             gutterBottom
@@ -530,6 +649,31 @@ export default function Lesson() {
                             />
                             {index === activeStep && (
                                 <ChevronRightIcon color="primary" />
+                            )}
+                            {step.videoSrc && (
+                                <Tooltip title="Includes video">
+                                    <VideoLibraryIcon 
+                                        fontSize="small" 
+                                        color="error" 
+                                        sx={{ 
+                                            ml: 1, 
+                                            opacity: index === activeStep ? 1 : 0.7,
+                                            fontSize: 16,
+                                            animation: index === activeStep ? 'pulse 2s infinite' : 'none',
+                                            '@keyframes pulse': {
+                                                '0%': {
+                                                    opacity: 0.7,
+                                                },
+                                                '50%': {
+                                                    opacity: 1,
+                                                },
+                                                '100%': {
+                                                    opacity: 0.7,
+                                                },
+                                            },
+                                        }} 
+                                    />
+                                </Tooltip>
                             )}
                         </ListItem>
                     ))}
