@@ -299,7 +299,13 @@ export default function Profile() {
                     {sharedContent.length > 0 ? (
                         <Grid container spacing={3}>
                             {sharedContent.map((post, index) => (
-                                <Grid item xs={12} sm={6} key={index}>
+                                <Grid 
+                                    item 
+                                    xs={12} 
+                                    sm={6} 
+                                    key={index}
+                                    component="div"
+                                >
                                     <Fade in={true} timeout={300 + index * 100}>
                                         <Card 
                                             elevation={0} 
