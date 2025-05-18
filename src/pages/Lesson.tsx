@@ -1,5 +1,5 @@
 //@ts-nocheck
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles'
 import {
     Box,
@@ -16,7 +16,7 @@ import {
     Collapse,
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ExpandCircleDown } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
@@ -27,54 +27,15 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import MoreVertIcon from '@mui/icons-material/MoreVert'; 
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
+import lessonContentData from '../data/lessonContent.json';
 
-const steps = [
-    {
-        title: 'Introduction to Fattoush',
-        content: 'Fattoush is a vibrant Lebanese salad made with fresh vegetables, crispy pita, and a zesty dressing. Let’s learn how to make it step by step!',
-        image: '/fattoush.jpg',
-    },
-    {
-        title: 'Step 1: Prepare the Vegetables',
-        content: 'Chop tomatoes, cucumbers, radishes, lettuce, and green onions into bite-sized pieces. Freshness is key!',
-        image: '/chopped.jpg',
-        noteRating: '71% of users suggest: ',
-        noteText: 'If you are rushed by time or unable to chop the ingredients with a knife, you could try using a food processor.',
-        noteAuthor: '- CollegeBoy123'
-    },
-    {
-        title: 'Step 2: Toast the Pita',
-        content: 'Cut pita bread into small pieces and toast or fry until golden and crispy. This adds the signature crunch to Fattoush.',
-        image: '/toastpita.jpg',
-        noteRating: '94% of users suggest: ',
-        noteText: 'Feel free to adjust how long the bread should be fried for! If you prefer something less crunchier, fry it for a shorter duration of time!',
-        noteAuthor: '- HomeCookPro'
-    },
-    {
-        title: 'Step 3: Make the Dressing',
-        content: 'Whisk together olive oil, lemon juice, sumac, garlic, salt, and pepper. Sumac gives Fattoush its tangy flavor.',
-        image: '/dressing.jpg',
-        noteRating: '84% of users suggest: ',
-        noteText: 'Use the best quality extra virgin olive oil you can find and avoid those simply labeled as "Pure", they lack character and flavor',
-        noteAuthor: '- Paolo Ferraro'
-    },
-    {
-        title: 'Step 4: Toss & Serve',
-        content: 'Combine veggies, pita, and dressing. Toss well and serve immediately for the best crunch. Enjoy your homemade Fattoush!',
-        image: '/tossandserve.jpg',
-        noteRating: '90% of users suggest: ',
-        noteText: 'If you think you make too much of a mess when tossing the ingredients, try using a lid! Make sure to give enough space for the food to toss around though',
-        noteAuthor: '- NewComerCook'
-    },
-];
-
-interface ExpandMoreProps extends IconButtonProps {
+interface IconButtonProps {
     expand: boolean;
-  }
+}
 
-  const Accordion = styled((props: AccordionProps) => (
+const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion elevation={0} square {...props} />
-  ))(({ theme }) => ({
+))(({ theme }) => ({
     border: `1px solid ${theme.palette.divider}`,
     '&:not(:last-child)': {
       borderBottom: 0,
@@ -82,43 +43,108 @@ interface ExpandMoreProps extends IconButtonProps {
     '&::before': {
       display: 'none',
     },
-  }));
+}));
 
-  const AccordionSummary = styled((props: AccordionSummaryProps) => (
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
     <MuiAccordionSummary
       expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: '0.9rem' }} />}
       {...props}
     />
-  ))(({ theme }) => ({
+))(({ theme }) => ({
     backgroundColor: 'rgba(255, 255, 255, 0.78)',
     flexDirection: 'row-reverse',
     [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
-      {
+    {
         transform: 'rotate(90deg)',
-      },
+    },
     [`& .${accordionSummaryClasses.content}`]: {
-      marginLeft: theme.spacing(1),
+        marginLeft: theme.spacing(1),
     },
     ...theme.applyStyles('light', {
-      backgroundColor: 'rgba(255, 255, 255, 0.78)',
+        backgroundColor: 'rgba(255, 255, 255, 0.78)',
     }),
-  }));
+}));
   
-
-  const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
     padding: theme.spacing(2),
     borderTop: '1px solid rgba(0, 0, 0, .125)',
     width: 'auto',
-  }));
+}));
   
 export default function Lesson() {
     const theme = useTheme();
     const navigate = useNavigate();
+    const location = useLocation();
     const [activeStep, setActiveStep] = useState(0);
+    const [lessonSteps, setLessonSteps] = useState([]);
+    const [lessonName, setLessonName] = useState('');
+    const [activePanel, setActivePanel] = useState<'panel1' | 'panel2'>('panel1');
+    
+    useEffect(() => {
+        console.log("Location state changed:", location.state); // Debug full state
+        
+        if (location.state && location.state.lesson) {
+            const { lesson } = location.state;
+            console.log("Lesson data received:", lesson); // Debug lesson
+            
+            // Get cuisine ID if available
+            const cuisineId = location.state.cuisineId;
+            console.log("Cuisine ID:", cuisineId); // Debug cuisineId
+            
+            // Log all available lessons for debugging
+            console.log("Available lesson content:", 
+                lessonContentData.map(l => ({ id: l.id, cuisineId: l.cuisineId, name: l.name }))
+            );
+            
+            // Find matching lesson content from JSON data, using both cuisineId and lesson id if available
+            let lessonContent;
+            
+            if (cuisineId) {
+                // If cuisineId is provided, first try to match by both cuisineId and lesson id
+                lessonContent = lessonContentData.find(l => 
+                    l.cuisineId === cuisineId && l.id === lesson.id
+                );
+                
+                if (lessonContent) {
+                    console.log("Found match by cuisineId and id");
+                }
+            }
+            
+            // If not found or cuisineId wasn't provided, try other matching methods
+            if (!lessonContent) {
+                lessonContent = lessonContentData.find(l => 
+                    (l.id === lesson.id && l.name === lesson.name) || // Exact match by id and name
+                    (l.id === lesson.id) || // Match just by id
+                    (l.name === lesson.name) // Match just by name
+                );
+                
+                if (lessonContent) {
+                    console.log("Found match by fallback methods");
+                }
+            }
+            
+            if (lessonContent) {
+                console.log("Using lesson content:", lessonContent); // Debug matched content
+                setLessonSteps(lessonContent.steps);
+                setLessonName(lessonContent.name);
+            } else {
+                // Fallback to first lesson if no match found
+                console.warn('Lesson content not found, using fallback');
+                console.log("Available lessons:", lessonContentData);
+                setLessonSteps(lessonContentData[0].steps);
+                setLessonName(lessonContentData[0].name);
+            }
+        } else {
+            // Fallback if no lesson state is provided
+            console.warn('No lesson state provided, using fallback');
+            setLessonSteps(lessonContentData[0].steps);
+            setLessonName(lessonContentData[0].name);
+        }
+    }, [location.state]);
 
     {/* Community notes section*/}
     function CommunityNotes(){
-        if (activeStep > 0){
+        if (activeStep > 0 && lessonSteps[activeStep]?.noteText){
             return(
                 <Card sx={{width: 550, position: 'fixed', bottom: 100}}>
                     <Accordion expanded={activePanel === 'panel2'} onChange={handlePanel2Change}>
@@ -127,22 +153,23 @@ export default function Lesson() {
                     </AccordionSummary>
                     <CardContent>
                     <AccordionDetails>
-                    {steps[activeStep].noteRating} <br></br>
-                    {steps[activeStep].noteText} <br></br>
-                    {steps[activeStep].noteAuthor}
+                    {lessonSteps[activeStep].noteRating} <br></br>
+                    {lessonSteps[activeStep].noteText} <br></br>
+                    {lessonSteps[activeStep].noteAuthor}
                     </AccordionDetails>
                     </CardContent>
                     </Accordion>
                 </Card>
             )
         }
+        return null;
     }
 
     const handleNext = () => {
-        if (activeStep < steps.length - 1) {
+        if (activeStep < lessonSteps.length - 1) {
             setActiveStep((prev) => prev + 1);
         } else {
-            navigate('/complete', { state: { lesson: { name: 'Fattoush' } } });
+            navigate('/complete', { state: { lesson: { name: lessonName } } });
         }
     };
 
@@ -157,15 +184,14 @@ export default function Lesson() {
     const handleShare = () => {
         if (navigator.share) {
             navigator.share({
-                title: 'I just completed the Fattoush lesson on BiteQuest!',
-                text: 'Check out my progress and try this delicious Lebanese salad!',
+                title: `I just completed the ${lessonName} lesson on BiteQuest!`,
+                text: `Check out my progress and try this delicious recipe!`,
                 url: window.location.href,
             });
         } else {
             alert('Sharing is not supported on this device.');
         }
     };
-    const [activePanel, setActivePanel] = useState<'panel1' | 'panel2'>('panel1');
 
     const handlePanel2Change = (event, isExpanded) => {
         if (isExpanded) {
@@ -174,6 +200,23 @@ export default function Lesson() {
             setActivePanel('panel1');  // fallback to panel1 if collapsing panel2
         }
     };
+
+    // If lesson data is still loading
+    if (lessonSteps.length === 0) {
+        return (
+            <Box
+                sx={{
+                    minHeight: '100vh',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bgcolor: theme.palette.background.default,
+                }}
+            >
+                <Typography>Loading lesson...</Typography>
+            </Box>
+        );
+    }
 
     return (
         <Box
@@ -198,7 +241,7 @@ export default function Lesson() {
                             color: theme.palette.text.secondary,
                         }}
                     >
-                        Step {activeStep + 1} of {steps.length}
+                        Step {activeStep + 1} of {lessonSteps.length}
                     </Typography>
                     <Box sx={{ width: 40 }} />
                 </Box>
@@ -207,8 +250,8 @@ export default function Lesson() {
                         {/* image for the step */}
                         <CardMedia
                             component="img"
-                            image={steps[activeStep].image}
-                            alt={steps[activeStep].title}
+                            image={lessonSteps[activeStep].image}
+                            alt={lessonSteps[activeStep].title}
                             sx={{
                                 width: '100%',
                                 height: 200,
@@ -230,14 +273,14 @@ export default function Lesson() {
                                 textAlign: 'center',
                             }}
                         >
-                            {steps[activeStep].title}
+                            {lessonSteps[activeStep].title}
                         </Typography>
                         <Typography
                             variant="body1"
                             color="text.secondary"
                             sx={{ textAlign: 'center', mb: 3 }}
                         >
-                            {steps[activeStep].content}
+                            {lessonSteps[activeStep].content}
                         </Typography>
                         </AccordionDetails>
                         </Accordion>
@@ -261,7 +304,7 @@ export default function Lesson() {
             >
                 <MobileStepper
                     variant="dots"
-                    steps={steps.length}
+                    steps={lessonSteps.length}
                     position="static"
                     activeStep={activeStep}
                     nextButton={<div />}
@@ -280,7 +323,7 @@ export default function Lesson() {
                     fullWidth
                     sx={{ py: 1.5, borderRadius: 3 }}
                 >
-                    {activeStep === steps.length - 1 ? 'Finish Lesson' : 'Continue'}
+                    {activeStep === lessonSteps.length - 1 ? 'Finish Lesson' : 'Continue'}
                 </Button>
             </Box>
         </Box>
