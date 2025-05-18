@@ -23,8 +23,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import SearchIcon from '@mui/icons-material/Search';
+import KitchenIcon from '@mui/icons-material/Kitchen';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import StarIcon from '@mui/icons-material/Star';
@@ -158,11 +157,18 @@ export default function CookingDashboard() {
                         
                         {/* Center action buttons */}
                         <Box sx={{ display: 'flex' }}>
-                            <IconButton size="small">
-                                <SearchIcon />
-                            </IconButton>
-                            <IconButton size="small">
-                                <NotificationsIcon />
+                            <IconButton 
+                                size="small"
+                                onClick={() => navigate('/pantry')}
+                                sx={{
+                                    transition: 'all 0.2s ease',
+                                    '&:hover': {
+                                        transform: 'scale(1.05)',
+                                        color: theme.palette.primary.main
+                                    }
+                                }}
+                            >
+                                <KitchenIcon />
                             </IconButton>
                         </Box>
                         
