@@ -15,7 +15,10 @@
         "videoSrc": "/videos/Dice-tomatoes-Demo.mp4",
         "noteRating": "92% of users suggest: ",
         "noteText": "Cutting vegetables on the diagonal (bias cut) creates more surface area and helps them cook faster.",
-        "noteAuthor": "- AsianFoodExpert"
+        "noteAuthor": "- AsianFoodExpert",
+        "note2Rating": "71% of users suggest: ",
+        "note2Text": "If you are rushed by time or unable to chop the ingredients with a knife, you could try using a food processor.",
+        "note2Author": "- CollegeBoy123"
       },
       {
         "title": "Make the Sauce",
@@ -31,7 +34,13 @@
         "image": "/hot-wok.jpg",
         "noteRating": "95% of users suggest: ",
         "noteText": "If you don't have a wok, a large flat-bottomed skillet works well too. Just make sure it's hot before adding ingredients!",
-        "noteAuthor": "- HomeChefGuru"
+        "noteAuthor": "- HomeChefGuru",
+        "note2Rating": "82% of users suggest: ",
+        "note2Text": "If you're using a wok, make sure to add the oil from the sides of the wok, remember that the oil will naturally flow towards the center and ensures that most of the wok is coated.",
+        "note2Author": "- ChefChan",
+        "note3Rating": "82% of users suggest: ",
+        "note3Text": "Make sure to season your wok before cooking! While optional, this can help enhance flavors for an authentic recipe",
+        "note3Author": "- WokMaster"
       },
       {
         "title": "Cook in the Right Order",
@@ -110,9 +119,12 @@
         "title": "Step 1: Prepare the Vegetables",
         "content": "Chop tomatoes, cucumbers, radishes, lettuce, and green onions into bite-sized pieces. Freshness is key!",
         "image": "/chopped.jpg",
-        "noteRating": "71% of users suggest: ",
+        "noteRating": "78% of users suggest: ",
         "noteText": "If you are rushed by time or unable to chop the ingredients with a knife, you could try using a food processor.",
-        "noteAuthor": "- CollegeBoy123"
+        "noteAuthor": "- CollegeBoy123",
+        "note2Rating": "75% of users suggest: ",
+        "note2Text": "Want to try something new at the sake of authenticity? Try using different or new ingredients as well!",
+        "note2Author": "- ChefMike"
       },
       {
         "title": "Step 2: Toast the Pita",
@@ -156,7 +168,10 @@
         "image": "/cucumber.jpg",
         "noteRating": "88% of users suggest: ",
         "noteText": "Use a cheese cloth or clean kitchen towel to really get all the moisture out of the cucumber.",
-        "noteAuthor": "- CookingQueen"
+        "noteAuthor": "- CookingQueen",
+        "note2Rating": "86% of users suggest: ",
+        "note2Text": "You can use a food processor as a shortcut rather than grating!",
+        "note2Author": "- BusySuzy"
       },
       {
         "title": "Step 2: Mix the Base",
@@ -164,7 +179,13 @@
         "image": "/yogurt.jpg",
         "noteRating": "78% of users suggest: ",
         "noteText": "Full-fat Greek yogurt works best for authentic flavor and creamy texture.",
-        "noteAuthor": "- ChefAlex"
+        "noteAuthor": "- ChefAlex",
+        "note2Rating": "77% of users suggest: ",
+        "note2Text": "Can't find Greek yogurt? Sour cream works best as an alternative without being too different!",
+        "note2Author": "- CollegeBoy123",
+        "note3Rating": "76%",
+        "note3Text": "Making this for a vegan friend? Try using vegan Greek yogurt or cashew cream if you can't find vegan Greek yogurt!",
+        "note3Author": "- VeganMasterChef"
       },
       {
         "title": "Step 3: Add Herbs & Seasonings",

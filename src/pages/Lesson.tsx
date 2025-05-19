@@ -24,7 +24,11 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListItemIcon
+    ListItemIcon,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
@@ -37,6 +41,19 @@ import ShareIcon from '@mui/icons-material/Share';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import lessonContentData from '../data/lessonContent.json';
+import CloseIcon from '@mui/icons-material/Close';
+import { BorderColor } from '@mui/icons-material';
+import Slide from '@mui/material/Slide';
+
+//Transition for community tips
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 // Video Player component for lesson steps that include videos
 const VideoPlayer = ({ src, title, poster }) => {
@@ -91,6 +108,14 @@ export default function Lesson() {
     const [completedSteps, setCompletedSteps] = useState([]);
     const [lessonId, setLessonId] = useState(null);
     const [cuisineId, setCuisineId] = useState(null);
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
     
     console.log("Location state changed:", location.state); // Debug full state
     
@@ -281,6 +306,8 @@ export default function Lesson() {
     const currentStep = lessonSteps[activeStep];
     const hasNotes = activeStep > 0 && currentStep?.noteText;
     const hasVideo = currentStep?.videoSrc;
+    const hasMoreNotes = activeStep > 0 && currentStep?.note2Text;
+    const hasEvenMoreNotes = activeStep > 0 && currentStep?.note3Text;
 
     return (
         <Box
@@ -565,6 +592,171 @@ export default function Lesson() {
                             >
                                 "{currentStep.noteText}"
                             </Typography>
+                            {/* Show more notes, only if it exists */}
+                            {hasMoreNotes && (
+                                <Box>
+                                    <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    onClick={handleClickOpen}
+                                    sx={{ 
+                                        borderRadius: 2,
+                                        textTransform: 'none',
+                                        px: 2,
+                                        borderColor: alpha(theme.palette.primary.main, 0.3),
+                                        '&:hover': {
+                                            borderColor: theme.palette.primary.main
+                                        }
+                                    }}
+                                    >
+                                        Show More Notes
+                                    </Button>
+                                    <Dialog
+                                    open={open}
+                                    onClose={() => setOpen(false)}
+                                    slots={{
+                                        transition: Transition,
+                                    }}
+                                    PaperProps={{
+                                        sx:{
+                                            bgcolor: 'white',
+                                            border: '2px solid',
+                                            borderColor: alpha(theme.palette.primary.main, 0.7),
+                                            borderRadius: 5
+                                        }
+                                    }}
+                                    >
+                                        <DialogTitle variant="subtitle1" fontWeight="bold">Community Tips</DialogTitle>
+                                        <IconButton
+                                        aria-label="close"
+                                        onClick={handleClose}
+                                        sx={(theme) => ({
+                                            position: 'absolute',
+                                            right: 8,
+                                            top: 8,
+                                            color: theme.palette.primary.main,
+                                        })}
+                                        >
+                                            <CloseIcon />
+                                        </IconButton>
+                                        <DialogContent dividers>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    color: 'success.main',
+                                                    bgcolor: alpha(theme.palette.success.main, 0.1),
+                                                    px: 1.5,
+                                                    py: 0.5,
+                                                    borderRadius: 4,
+                                                    mb: 1,
+                                                    width: 'fit-content'
+                                                }}
+                                            >
+                                                <ThumbUpOffAltIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                                                <Typography variant="caption" fontWeight="medium">
+                                                    {currentStep.noteRating}
+                                                </Typography>
+                                            </Box>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontStyle: 'italic',
+                                                    color: 'text.primary',
+                                                    mb: 0.5
+                                                }}
+                                            >
+                                                "{currentStep.noteText}"
+                                            </Typography>
+                                            <Typography
+                                                variant="caption"
+                                                color="text.secondary"
+                                            >
+                                                {currentStep.noteAuthor}
+                                            </Typography>
+                                        </DialogContent>
+                                        <DialogContent dividers>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    color: 'success.main',
+                                                    bgcolor: alpha(theme.palette.success.main, 0.1),
+                                                    px: 1.5,
+                                                    py: 0.5,
+                                                    borderRadius: 4,
+                                                    mb: 1,
+                                                    width: 'fit-content'
+                                                }}
+                                            >
+                                                <ThumbUpOffAltIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                                                <Typography variant="caption" fontWeight="medium">
+                                                    {currentStep.note2Rating}
+                                                </Typography>
+                                            </Box>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontStyle: 'italic',
+                                                    color: 'text.primary',
+                                                    mb: 0.5
+                                                }}
+                                            >
+                                                "{currentStep.note2Text}"
+                                            </Typography>
+                                            <Typography
+                                                variant="caption"
+                                                color="text.secondary"
+                                            >
+                                                {currentStep.note2Author}
+                                            </Typography>
+                                        </DialogContent>
+                                        {hasEvenMoreNotes && (
+                                            <DialogContent dividers>
+                                                <Box
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        color: 'success.main',
+                                                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                                                        px: 1.5,
+                                                        py: 0.5,
+                                                        borderRadius: 4,
+                                                        mb: 1,
+                                                        width: 'fit-content'
+                                                    }}
+                                                >
+                                                    <ThumbUpOffAltIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                                                    <Typography variant="caption" fontWeight="medium">
+                                                        {currentStep.note3Rating}
+                                                    </Typography>
+                                                </Box>
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{
+                                                        fontStyle: 'italic',
+                                                        color: 'text.primary',
+                                                        mb: 0.5
+                                                    }}
+                                                >
+                                                    "{currentStep.note3Text}"
+                                                </Typography>
+                                                <Typography
+                                                    variant="caption"
+                                                    color="text.secondary"
+                                                >
+                                                    {currentStep.note3Author}
+                                                </Typography>
+                                            </DialogContent>
+                                        )}
+                                        <DialogContent>
+                                            <Typography variant="body2" color="text.secondary">
+                                                Only the top 3 community tips above 75% rating are shown here
+                                            </Typography>
+                                        </DialogContent>
+                                    </Dialog>
+                                </Box>
+                            )}
                         </Paper>
                     </Collapse>
                 )}
@@ -705,3 +897,4 @@ export default function Lesson() {
         </Box>
     );
 }
+
