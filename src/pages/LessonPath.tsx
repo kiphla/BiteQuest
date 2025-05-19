@@ -412,236 +412,267 @@ export default function LessonPath() {
                     </Grid>
                 </Container>
             </Box>
-
-            {/* Main content */}
-            <Container maxWidth="md" sx={{ mt: 4 }}>
-                <Box sx={{ mb: 3 }}>
-                    <Typography variant="h5" fontWeight="bold" gutterBottom>
-                        Your Learning Path
+            <Box sx={{ position: 'relative', display: 'flex', alignItems: 'stretch' }}>
+                {/* Difficulty Line, for guidance */}
+                <Box
+                    sx={{
+                    position: 'absolute',
+                    top: '0.5%',
+                    bottom: 0,
+                    left: '0.5%',
+                    width: 20,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    py: 2,
+                    background: 'linear-gradient(to bottom, green, yellow, red)',
+                    color: 'white',
+                    textAlign: 'center',
+                    fontFamily: 'Playfair Display, serif',
+                    fontSize: 'clamp(10px, 1.2vw, 14px)',
+                    fontWeight: 'bold',
+                    zIndex: 1,
+                    borderRadius: 2,
+                    }}
+                >
+                    <Typography variant="caption" sx={{ transform: 'rotate(-90deg)' }}>
+                    Easy
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Complete lessons in sequence to master {currentCuisine.name.toLowerCase()}. Unlock new techniques as you progress!
+                    <Box sx={{ flex: 1 }} />
+                    <Typography variant="caption" sx={{ transform: 'rotate(-90deg)' }}>
+                    Hard
                     </Typography>
                 </Box>
-
-                <Grid container spacing={2.5} alignItems="stretch" justifyContent="center">
-                    {lessons.map((lesson, index) => {
-                        const isUnlocked = lesson.unlocked;
-                        const isNextUp = !isUnlocked && lesson.id === nextLessonId;
-                        
-                        return (
-                            <Grid item xs={12} sm={6} md={4} key={lesson.id} sx={{ display: 'flex' }}>
-                                <Card 
-                                    elevation={0} 
-                                    sx={{ 
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        width: '100%',
-                                        height: '100%',
-                                        borderRadius: 3,
-                                        boxShadow: isNextUp 
-                                            ? `0 8px 20px ${alpha(cuisineTheme.primary, 0.3)}`
-                                            : '0 2px 12px rgba(0,0,0,0.05)',
-                                        border: isNextUp
-                                            ? `2px solid ${cuisineTheme.primary}`
-                                            : `1px solid ${theme.palette.grey[200]}`,
-                                        opacity: !isUnlocked && !isNextUp ? 0.75 : 1,
-                                        transition: 'all 0.3s ease',
-                                        '&:hover': {
-                                            transform: (isUnlocked || isNextUp) ? 'translateY(-5px)' : 'none',
-                                            boxShadow: (isUnlocked || isNextUp) 
-                                                ? `0 12px 28px ${alpha(cuisineTheme.primary, 0.25)}`
-                                                : '0 2px 12px rgba(0,0,0,0.05)'
-                                        },
-                                        backgroundColor: isNextUp 
-                                            ? alpha(cuisineTheme.light, 0.6)
-                                            : 'white'
-                                    }}
-                                >
-                                    <CardActionArea 
-                                        onClick={() => handleLessonClick(lesson)}
-                                        disabled={!isUnlocked && !isNextUp}
+                {/* Main content */}
+                <Container maxWidth="md" sx={{ mt: 4 }}>
+                    <Box sx={{ mb: 3 }}>
+                        <Typography variant="h5" fontWeight="bold" gutterBottom>
+                            Your Learning Path
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Complete lessons in sequence to master {currentCuisine.name.toLowerCase()}. Unlock new techniques as you progress!
+                        </Typography>
+                    </Box>
+                    <Grid container spacing={2.5} alignItems="stretch" justifyContent="center">
+                        {lessons.map((lesson, index) => {
+                            const isUnlocked = lesson.unlocked;
+                            const isNextUp = !isUnlocked && lesson.id === nextLessonId;
+                            
+                            return (
+                                <Grid item xs={12} sm={6} md={4} key={lesson.id} sx={{ display: 'flex' }}>
+                                    <Card 
+                                        elevation={0} 
                                         sx={{ 
-                                            height: '100%',
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            alignItems: 'stretch',
-                                            justifyContent: 'flex-start'
+                                            width: '100%',
+                                            height: '100%',
+                                            borderRadius: 3,
+                                            boxShadow: isNextUp 
+                                                ? `0 8px 20px ${alpha(cuisineTheme.primary, 0.3)}`
+                                                : '0 2px 12px rgba(0,0,0,0.05)',
+                                            border: isNextUp
+                                                ? `2px solid ${cuisineTheme.primary}`
+                                                : `1px solid ${theme.palette.grey[200]}`,
+                                            opacity: !isUnlocked && !isNextUp ? 0.75 : 1,
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                transform: (isUnlocked || isNextUp) ? 'translateY(-5px)' : 'none',
+                                                boxShadow: (isUnlocked || isNextUp) 
+                                                    ? `0 12px 28px ${alpha(cuisineTheme.primary, 0.25)}`
+                                                    : '0 2px 12px rgba(0,0,0,0.05)'
+                                            },
+                                            backgroundColor: isNextUp 
+                                                ? alpha(cuisineTheme.light, 0.6)
+                                                : 'white'
                                         }}
                                     >
-                                        <Box sx={{ position: 'relative' }}>
-                                            <CardMedia
-                                                component="img"
-                                                height="160"
-                                                image={lesson.image}
-                                                alt={lesson.name}
-                                                sx={{ 
-                                                    filter: !isUnlocked ? 'grayscale(60%) brightness(0.9)' : 'none',
-                                                    objectFit: 'cover' 
-                                                }}
-                                            />
-                                            
-                                            {/* Lesson number badge */}
-                                            <Avatar
-                                                sx={{
-                                                    position: 'absolute',
-                                                    top: 12,
-                                                    left: 12,
-                                                    width: 36,
-                                                    height: 36,
-                                                    bgcolor: isUnlocked 
-                                                        ? cuisineTheme.primary 
-                                                        : 'rgba(0,0,0,0.5)',
-                                                    color: 'white',
-                                                    fontWeight: 'bold',
-                                                    fontSize: '0.9rem',
-                                                    border: '2px solid white',
-                                                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-                                                }}
-                                            >
-                                                {lesson.id}
-                                            </Avatar>
-                                            
-                                            {/* Status indicator */}
-                                            {isUnlocked && (
-                                                <Chip
-                                                    icon={<CheckCircleIcon />}
-                                                    label="Unlocked"
-                                                    size="small"
-                                                    color="success"
-                                                    sx={{
-                                                        position: 'absolute',
-                                                        bottom: 12,
-                                                        right: 12,
-                                                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-                                                    }}
-                                                />
-                                            )}
-                                            
-                                            {isNextUp && (
-                                                <Chip
-                                                    icon={<FlagIcon />}
-                                                    label="Next Up"
-                                                    size="small"
-                                                    sx={{
-                                                        position: 'absolute',
-                                                        bottom: 12,
-                                                        right: 12,
-                                                        bgcolor: cuisineTheme.primary,
-                                                        color: 'white',
-                                                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
-                                                    }}
-                                                />
-                                            )}
-                                            
-                                            {!isUnlocked && !isNextUp && (
-                                                <Box
-                                                    sx={{
-                                                        position: 'absolute',
-                                                        top: 0,
-                                                        left: 0,
-                                                        right: 0,
-                                                        bottom: 0,
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        bgcolor: 'rgba(0,0,0,0.4)'
-                                                    }}
-                                                >
-                                                    <LockIcon sx={{ color: 'white', fontSize: 40 }} />
-                                                </Box>
-                                            )}
-                                        </Box>
-                                        
-                                        <CardContent sx={{ 
-                                            p: 2.5, 
-                                            flex: 1, 
-                                            display: 'flex', 
-                                            flexDirection: 'column',
-                                            justifyContent: 'space-between' 
-                                        }}>
-                                            <Box>
-                                                <Typography 
-                                                    variant="h6" 
-                                                    component="div" 
-                                                    fontWeight="medium"
+                                        <CardActionArea 
+                                            onClick={() => handleLessonClick(lesson)}
+                                            disabled={!isUnlocked && !isNextUp}
+                                            sx={{ 
+                                                height: '100%',
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                alignItems: 'stretch',
+                                                justifyContent: 'flex-start'
+                                            }}
+                                        >
+                                            <Box sx={{ position: 'relative' }}>
+                                                <CardMedia
+                                                    component="img"
+                                                    height="160"
+                                                    image={lesson.image}
+                                                    alt={lesson.name}
                                                     sx={{ 
-                                                        fontSize: '1.1rem',
-                                                        mb: 1,
-                                                        minHeight: '2.5rem',
-                                                        display: '-webkit-box',
-                                                        WebkitLineClamp: 2,
-                                                        WebkitBoxOrient: 'vertical',
-                                                        overflow: 'hidden',
-                                                        textOverflow: 'ellipsis'
-                                                    }}
-                                                >
-                                                    {lesson.name}
-                                                </Typography>
-                                            
-                                                <Box sx={{ 
-                                                    display: 'flex', 
-                                                    mb: 1.5,
-                                                    color: isUnlocked ? theme.palette.warning.main : theme.palette.grey[400]
-                                                }}>
-                                                    {Array.from({ length: 5 }).map((_, i) => (
-                                                        <Box
-                                                            key={i}
-                                                            component={i < lesson.difficulty ? StarIcon : StarBorderIcon}
-                                                            sx={{ fontSize: 18, mr: 0.5 }}
-                                                        />
-                                                    ))}
-                                                </Box>
-                                            </Box>
-                                            
-                                            <Box sx={{ 
-                                                display: 'flex', 
-                                                alignItems: 'center', 
-                                                justifyContent: 'space-between',
-                                                mt: 'auto',
-                                                pt: 1.5,
-                                                borderTop: `1px solid ${alpha(theme.palette.grey[300], 0.5)}` 
-                                            }}>
-                                                <Chip
-                                                    size="small"
-                                                    label={`${lesson.recipes.length} ingredients`}
-                                                    sx={{ 
-                                                        height: 24,
-                                                        backgroundColor: alpha(theme.palette.grey[500], 0.1),
-                                                        color: 'text.secondary',
-                                                        fontWeight: 'medium',
-                                                        fontSize: '0.75rem'
+                                                        filter: !isUnlocked ? 'grayscale(60%) brightness(0.9)' : 'none',
+                                                        objectFit: 'cover' 
                                                     }}
                                                 />
                                                 
-                                                <Typography 
-                                                    variant="caption" 
-                                                    sx={{ 
-                                                        fontWeight: 'medium',
-                                                        color: isUnlocked ? 'text.primary' : 'text.secondary',
-                                                        fontSize: '0.75rem',
-                                                        display: 'flex',
-                                                        alignItems: 'center'
+                                                {/* Lesson number badge */}
+                                                <Avatar
+                                                    sx={{
+                                                        position: 'absolute',
+                                                        top: 12,
+                                                        left: 12,
+                                                        width: 36,
+                                                        height: 36,
+                                                        bgcolor: isUnlocked 
+                                                            ? cuisineTheme.primary 
+                                                            : 'rgba(0,0,0,0.5)',
+                                                        color: 'white',
+                                                        fontWeight: 'bold',
+                                                        fontSize: '0.9rem',
+                                                        border: '2px solid white',
+                                                        boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
                                                     }}
                                                 >
-                                                    {isUnlocked ? 'Start Lesson' : isNextUp ? 'Unlock Next' : 'Locked'}
-                                                    <ArrowBackIosNewIcon 
-                                                        sx={{ 
-                                                            ml: 0.5, 
-                                                            fontSize: 12,
-                                                            transform: 'rotate(180deg)'
-                                                        }} 
+                                                    {lesson.id}
+                                                </Avatar>
+                                                
+                                                {/* Status indicator */}
+                                                {isUnlocked && (
+                                                    <Chip
+                                                        icon={<CheckCircleIcon />}
+                                                        label="Unlocked"
+                                                        size="small"
+                                                        color="success"
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            bottom: 12,
+                                                            right: 12,
+                                                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                                                        }}
                                                     />
-                                                </Typography>
+                                                )}
+                                                
+                                                {isNextUp && (
+                                                    <Chip
+                                                        icon={<FlagIcon />}
+                                                        label="Next Up"
+                                                        size="small"
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            bottom: 12,
+                                                            right: 12,
+                                                            bgcolor: cuisineTheme.primary,
+                                                            color: 'white',
+                                                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                                                        }}
+                                                    />
+                                                )}
+                                                
+                                                {!isUnlocked && !isNextUp && (
+                                                    <Box
+                                                        sx={{
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            left: 0,
+                                                            right: 0,
+                                                            bottom: 0,
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            justifyContent: 'center',
+                                                            bgcolor: 'rgba(0,0,0,0.4)'
+                                                        }}
+                                                    >
+                                                        <LockIcon sx={{ color: 'white', fontSize: 40 }} />
+                                                    </Box>
+                                                )}
                                             </Box>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            </Container>
+                                            
+                                            <CardContent sx={{ 
+                                                p: 2.5, 
+                                                flex: 1, 
+                                                display: 'flex', 
+                                                flexDirection: 'column',
+                                                justifyContent: 'space-between' 
+                                            }}>
+                                                <Box>
+                                                    <Typography 
+                                                        variant="h6" 
+                                                        component="div" 
+                                                        fontWeight="medium"
+                                                        sx={{ 
+                                                            fontSize: '1.1rem',
+                                                            mb: 1,
+                                                            minHeight: '2.5rem',
+                                                            display: '-webkit-box',
+                                                            WebkitLineClamp: 2,
+                                                            WebkitBoxOrient: 'vertical',
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis'
+                                                        }}
+                                                    >
+                                                        {lesson.name}
+                                                    </Typography>
+                                                
+                                                    <Box sx={{ 
+                                                        display: 'flex', 
+                                                        mb: 1.5,
+                                                        color: isUnlocked ? theme.palette.warning.main : theme.palette.grey[400]
+                                                    }}>
+                                                        {Array.from({ length: 5 }).map((_, i) => (
+                                                            <Box
+                                                                key={i}
+                                                                component={i < lesson.difficulty ? StarIcon : StarBorderIcon}
+                                                                sx={{ fontSize: 18, mr: 0.5 }}
+                                                            />
+                                                        ))}
+                                                    </Box>
+                                                </Box>
+                                                
+                                                <Box sx={{ 
+                                                    display: 'flex', 
+                                                    alignItems: 'center', 
+                                                    justifyContent: 'space-between',
+                                                    mt: 'auto',
+                                                    pt: 1.5,
+                                                    borderTop: `1px solid ${alpha(theme.palette.grey[300], 0.5)}` 
+                                                }}>
+                                                    <Chip
+                                                        size="small"
+                                                        label={`${lesson.recipes.length} ingredients`}
+                                                        sx={{ 
+                                                            height: 24,
+                                                            backgroundColor: alpha(theme.palette.grey[500], 0.1),
+                                                            color: 'text.secondary',
+                                                            fontWeight: 'medium',
+                                                            fontSize: '0.75rem'
+                                                        }}
+                                                    />
+                                                    
+                                                    <Typography 
+                                                        variant="caption" 
+                                                        sx={{ 
+                                                            fontWeight: 'medium',
+                                                            color: isUnlocked ? 'text.primary' : 'text.secondary',
+                                                            fontSize: '0.75rem',
+                                                            display: 'flex',
+                                                            alignItems: 'center'
+                                                        }}
+                                                    >
+                                                        {isUnlocked ? 'Start Lesson' : isNextUp ? 'Unlock Next' : 'Locked'}
+                                                        <ArrowBackIosNewIcon 
+                                                            sx={{ 
+                                                                ml: 0.5, 
+                                                                fontSize: 12,
+                                                                transform: 'rotate(180deg)'
+                                                            }} 
+                                                        />
+                                                    </Typography>
+                                                </Box>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                </Container>
+            </Box>
 
             {/* Lesson Modal */}
             <Modal 
