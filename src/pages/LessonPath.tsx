@@ -87,6 +87,18 @@ export default function LessonPath() {
     const [currentCuisine, setCurrentCuisine] = useState<CuisinePath | null>(null);
     const [lessons, setLessons] = useState<Lesson[]>([]);
     const [loading, setLoading] = useState(true);
+    const [activeLessonIdx, setActiveLessonIdx] = useState<number | null>(null);
+    const [isBarInteracting, setIsBarInteracting] = useState(false);
+
+    // Handler for difficulty bar dot clicks
+    const handleBarDotClick = (idx: number) => {
+        setActiveLessonIdx(idx);
+        // Scroll to the lesson card
+        const lessonCards = document.querySelectorAll('.lesson-card');
+        if (lessonCards[idx]) {
+            lessonCards[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
 
     // Get the cuisine data based on the cuisineId parameter
     useEffect(() => {
@@ -414,7 +426,7 @@ export default function LessonPath() {
             </Box>
 
             {/* Main content */}
-            <Container maxWidth="md" sx={{ mt: 4 }}>
+            <Container maxWidth="md" sx={{ mt: 4, position: 'relative' }}>
                 <Box sx={{ mb: 3 }}>
                     <Typography variant="h5" fontWeight="bold" gutterBottom>
                         Your Learning Path
@@ -423,6 +435,260 @@ export default function LessonPath() {
                         Complete lessons in sequence to master {currentCuisine.name.toLowerCase()}. Unlock new techniques as you progress!
                     </Typography>
                 </Box>
+
+                {/* Modern Mobile Difficulty Bar with Touch Interaction */}
+                {lessons.length > 1 && (
+                    <Box
+                        sx={{
+                            position: 'sticky',
+                            right: 8,
+                            top: 90, // Positioned below the header
+                            float: 'right',
+                            width: 64,
+                            height: `${Math.min(window.innerHeight - 160, lessons.length * 60 + 120)}px`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: openLesson || showLockedModal ? 1049 : 5, // Place above modal backdrop but below modal content
+                            touchAction: 'manipulation',
+                            marginLeft: 2,
+                            marginBottom: 2,
+                            pointerEvents: openLesson || showLockedModal ? 'none' : 'auto', // Disable interaction while any modal is open
+                        }}
+                        onMouseDown={() => !openLesson && !showLockedModal && setIsBarInteracting(true)}
+                        onTouchStart={() => !openLesson && !showLockedModal && setIsBarInteracting(true)}
+                        onMouseUp={() => !openLesson && !showLockedModal && setIsBarInteracting(false)}
+                        onTouchEnd={() => !openLesson && !showLockedModal && setIsBarInteracting(false)}
+                        onMouseLeave={() => !openLesson && !showLockedModal && setIsBarInteracting(false)}
+                    >
+                        {/* Track with gradient */}
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                left: '50%',
+                                top: 20,
+                                bottom: 20,
+                                width: 22,
+                                transform: 'translateX(-50%)',
+                                borderRadius: 14,
+                                background: `linear-gradient(to bottom, #56ab2f, #ffe259, #ff6e7f)`, 
+                                boxShadow: '0 3px 15px rgba(0,0,0,0.12)',
+                                opacity: 0.75,
+                                zIndex: 1,
+                            }}
+                        />
+
+                        {/* Difficulty Label */}
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                left: '50%',
+                                bottom: -35,
+                                transform: 'translateX(-50%)',
+                                backgroundColor: 'white',
+                                borderRadius: 1,
+                                padding: '5px 10px',
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+                                zIndex: 4,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography
+                                variant="caption"
+                                sx={{
+                                    fontWeight: 'bold',
+                                    fontSize: '0.7rem',
+                                    color: 'text.secondary',
+                                    whiteSpace: 'nowrap',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                }}
+                            >
+                                DIFFICULTY
+                            </Typography>
+                        </Box>
+
+                        {/* Dots for lessons */}
+                        <Box
+                            sx={{
+                                position: 'relative',
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'space-around',
+                                paddingY: 2,
+                                zIndex: 2,
+                            }}
+                        >
+                            {lessons.map((lesson, idx) => {
+                                const total = lessons.length - 1;
+                                const progress = total > 0 ? idx / total : 0;
+                                // Color by difficulty
+                                const difficultyColor = progress < 0.33 ? '#56ab2f' : progress < 0.66 ? '#ffe259' : '#ff6e7f';
+                                const isActive = idx === activeLessonIdx;
+                                const isFirst = idx === 0;
+                                const isLast = idx === lessons.length - 1;
+                                
+                                // Determine if this lesson can be accessed
+                                const canNavigate = lesson.unlocked;
+                                
+                                return (
+                                    <Box
+                                        key={lesson.id}
+                                        onClick={() => canNavigate ? handleBarDotClick(idx) : null}
+                                        sx={{
+                                            position: 'relative',
+                                            width: 48,
+                                            height: 48,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            cursor: canNavigate ? 'pointer' : 'default',
+                                            transition: 'transform 0.2s ease-in-out',
+                                            WebkitTapHighlightColor: 'transparent',
+                                            '&:hover': canNavigate ? {
+                                                transform: 'scale(1.05)',
+                                            } : {},
+                                            '&:active': canNavigate ? {
+                                                transform: 'scale(0.95)',
+                                            } : {},
+                                            zIndex: 3, // Ensure circles are above track
+                                        }}
+                                        aria-label={`Lesson ${idx + 1}${!lesson.unlocked ? ' (locked)' : ''}`}
+                                    >
+                                        {/* Outer glow/border for active state */}
+                                        {isActive && (
+                                            <Box
+                                                sx={{
+                                                    position: 'absolute',
+                                                    width: 44,
+                                                    height: 44,
+                                                    borderRadius: '50%',
+                                                    background: `radial-gradient(circle, ${alpha(difficultyColor, 0.2)} 0%, transparent 70%)`,
+                                                    animation: 'pulse 2s infinite ease-in-out',
+                                                    '@keyframes pulse': {
+                                                        '0%': { transform: 'scale(1)', opacity: 0.8 },
+                                                        '50%': { transform: 'scale(1.1)', opacity: 0.5 },
+                                                        '100%': { transform: 'scale(1)', opacity: 0.8 },
+                                                    },
+                                                }}
+                                            />
+                                        )}
+
+                                        {/* Circle background for contrast against the track */}
+                                        <Box
+                                            sx={{
+                                                position: 'absolute',
+                                                width: (isActive ? 36 : (isFirst || isLast) ? 40 : 28) * 1.2, 
+                                                height: (isActive ? 36 : (isFirst || isLast) ? 40 : 28) * 1.2,
+                                                borderRadius: '50%',
+                                                backgroundColor: 'white',
+                                                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                                            }}
+                                        />
+
+                                        {/* Inner circle */}
+                                        <Box
+                                            sx={{
+                                                position: 'relative',
+                                                width: (isActive ? 30 : (isFirst || isLast) ? 34 : 22) * 1.2,
+                                                height: (isActive ? 30 : (isFirst || isLast) ? 34 : 22) * 1.2,
+                                                borderRadius: '50%',
+                                                backgroundColor: isActive ? alpha(difficultyColor, 0.15) : 'transparent',
+                                                border: `2.5px solid ${difficultyColor}`,
+                                                boxShadow: isActive 
+                                                    ? `0 0 10px 2px ${alpha(difficultyColor, 0.5)}` 
+                                                    : lesson.unlocked 
+                                                        ? `0 1px 3px ${alpha('#000', 0.2)}` 
+                                                        : 'none',
+                                                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                                opacity: lesson.unlocked ? 1 : 0.5,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                overflow: 'hidden',
+                                                '&::after': lesson.unlocked && !isFirst && !isLast ? {
+                                                    content: '""',
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    background: `linear-gradient(135deg, transparent 0%, ${alpha(difficultyColor, 0.1)} 100%)`,
+                                                    borderRadius: '50%',
+                                                } : {},
+                                            }}
+                                        >
+                                            {/* Show level number in all circles */}
+                                            {lesson.unlocked && (
+                                                <Typography
+                                                    variant="caption"
+                                                    sx={{
+                                                        fontSize: '0.7rem',
+                                                        fontWeight: 'bold',
+                                                        color: difficultyColor,
+                                                        textShadow: '0 1px 1px rgba(0,0,0,0.15)',
+                                                        lineHeight: 1,
+                                                        pointerEvents: 'none',
+                                                    }}
+                                                >
+                                                    {idx + 1}
+                                                </Typography>
+                                            )}
+                                            
+                                            {/* Show lock for locked lessons */}
+                                            {!lesson.unlocked && (
+                                                <Box
+                                                    component={LockIcon}
+                                                    sx={{
+                                                        fontSize: 12,
+                                                        color: difficultyColor,
+                                                        filter: 'drop-shadow(0 1px 1px rgba(0,0,0,0.2))',
+                                                    }}
+                                                />
+                                            )}
+                                        </Box>
+
+                                        {/* Completion indicator */}
+                                        {lesson.completed && (
+                                            <Box
+                                                sx={{
+                                                    position: 'absolute',
+                                                    bottom: -3,
+                                                    right: -3,
+                                                    width: 14,
+                                                    height: 14,
+                                                    borderRadius: '50%',
+                                                    backgroundColor: '#4caf50',
+                                                    border: '2px solid #fff',
+                                                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                }}
+                                            >
+                                                <Box
+                                                    component="span"
+                                                    sx={{
+                                                        width: 6,
+                                                        height: 6,
+                                                        borderRight: '1.5px solid white',
+                                                        borderBottom: '1.5px solid white',
+                                                        transform: 'rotate(45deg) translate(-1px, -1px)',
+                                                    }}
+                                                />
+                                            </Box>
+                                        )}
+                                    </Box>
+                                );
+                            })}
+                        </Box>
+                    </Box>
+                )}
 
                 <Grid container spacing={2.5} alignItems="stretch" justifyContent="center">
                     {lessons.map((lesson, index) => {
@@ -433,6 +699,7 @@ export default function LessonPath() {
                             <Grid item xs={12} sm={6} md={4} key={lesson.id} sx={{ display: 'flex' }}>
                                 <Card 
                                     elevation={0} 
+                                    className="lesson-card"
                                     sx={{ 
                                         display: 'flex',
                                         flexDirection: 'column',
