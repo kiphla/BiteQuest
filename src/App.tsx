@@ -21,14 +21,16 @@ import Share from './pages/Share';
 import Review from './pages/Review';
 import MyProfile from './pages/MyProfile';
 import Pantry from './pages/Pantry';
+import Profile from './pages/Profile';
+import Friends from './pages/Friends';
+import FriendProfile from './pages/FriendProfile';
+import OnboardingStep4 from './pages/OnboardingStep4';
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <IPhoneTopBar />
-        {/* User profile icon in top right, not absolute */}
 
         <Box sx={{ flex: 1 }}>
           <BrowserRouter>
@@ -39,10 +41,14 @@ export default function App() {
               <Route path="/lesson" element={<Lesson />} />
               <Route path="/dashboard" element={<CookingDashboard />} />
               <Route path="/lessonpath" element={<LessonPath />} />
+              <Route path="/lessonpath/:cuisineId" element={<LessonPath />} />
               <Route path="/share" element={<Share />} />
               <Route path="/review" element={<Review />} />
               <Route path="/myprofile" element={<MyProfile />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/pantry" element={<Pantry />} />
+              <Route path="/friends" element={<Friends />} />
+              <Route path="/friendprofile/:id" element={<FriendProfile />} />
 
               {/* nest all onboarding steps under one provider */}
               <Route
@@ -56,6 +62,7 @@ export default function App() {
                 <Route path="1" element={<OnboardingStep1 />} />
                 <Route path="2" element={<OnboardingStep2 />} />
                 <Route path="3" element={<OnboardingStep3 />} />
+                <Route path="4" element={<OnboardingStep4 />} />
               </Route>
             </Routes>
           </BrowserRouter>
