@@ -1,201 +1,113 @@
-import { useState } from 'react';
 import {
     Box,
     Button,
     Typography,
     Container,
+    Card,
+    CardActionArea,
+    CardContent,
     IconButton,
-    TextField,
-    Divider,
-    Link,
-    Stack,
-    useTheme,
     MobileStepper,
+    useTheme,
+    Stack,
+    Chip
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import AppleIcon from '@mui/icons-material/Apple';
-import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
+import { useOnboarding } from '../contexts/OnboardingContext';
 
-export default function RegisterPage() {
+const dietaryRequirementsList = [
+    { name: 'Vegetarian', description: 'No meat, poultry, or seafood', icon: '🥕' },
+    { name: 'Vegan', description: 'No animal products or byproducts', icon: '🌱' },
+    { name: 'Gluten-Free', description: 'No wheat, barley, or rye', icon: '🌾' },
+    { name: 'Dairy-Free', description: 'No milk, cheese, or dairy products', icon: '🥛' },
+    { name: 'Nut-Free', description: 'No peanuts, tree nuts, or derivatives', icon: '🥜' },
+    { name: 'Keto', description: 'Low carb, high fat diet', icon: '🥩' },
+    { name: 'Halal', description: 'Permissible according to Islamic law', icon: '☪️' },
+    { name: 'Kosher', description: 'Meets Jewish dietary laws', icon: '✡️' },
+    { name: 'No Restrictions', description: 'Open to all food options', icon: '🍽️' }
+];
+
+export default function OnboardingStep3() {
     const theme = useTheme();
     const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const { dietaryRequirements, setDietaryRequirements } = useOnboarding();
 
-    const handleSocial = (provider: 'apple' | 'google') => {
-        // TODO: trigger OAuth flow
-        console.log(`Social sign up with ${provider}`);
-        navigate('/dashboard');
+    const handleSelect = (requirement: string) => {
+        // If "No Restrictions" is selected, clear all other selections
+        if (requirement === 'No Restrictions') {
+            setDietaryRequirements(['No Restrictions']);
+            return;
+        }
+        
+        // If another option is selected while "No Restrictions" was active, remove "No Restrictions"
+        let newRequirements = [...dietaryRequirements];
+        if (dietaryRequirements.includes('No Restrictions')) {
+            newRequirements = newRequirements.filter(r => r !== 'No Restrictions');
+        }
+        
+        // Toggle the selected requirement
+        if (newRequirements.includes(requirement)) {
+            newRequirements = newRequirements.filter(r => r !== requirement);
+        } else {
+            newRequirements = [...newRequirements, requirement];
+        }
+        
+        setDietaryRequirements(newRequirements);
     };
 
-    const handleRegister = () => {
-        // TODO: submit email/password registration
-        console.log({ email, password });
-        navigate('/dashboard');
+    const handleNext = () => {
+        navigate('/onboarding/4');
     };
 
     return (
-        <Box
-            sx={{
-                minHeight: '100vh',
-                bgcolor: theme.palette.background.default,
-                pb: 14, // Add padding for the fixed bottom bar
-            }}
-        >
-            <Container maxWidth="xs" sx={{ pt: 4 }}>
-                {/* back button + step indicator */}
+        <Box sx={{ minHeight: '100vh', bgcolor: theme.palette.background.default, pb: 14 }}>
+            <Container maxWidth="sm" sx={{ pt: 4, pb: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                     <IconButton onClick={() => navigate(-1)}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
-                    <Typography
-                        variant="subtitle2"
-                        sx={{
-                            flex: 1,
-                            textAlign: 'center',
-                            fontWeight: 'medium',
-                            color: theme.palette.text.secondary
-                        }}
-                    >
-                        Step 3 of 3
+                    <Typography variant="subtitle2" sx={{ flex: 1, textAlign: 'center', fontWeight: 'medium', color: theme.palette.text.secondary }}>
+                        Step 3 of 4
                     </Typography>
                     <Box sx={{ width: 40 }} />
                 </Box>
 
-                {/* title */}
-                <Typography
-                    variant="h5"
-                    gutterBottom
-                    sx={{
-                        fontFamily: '"Playfair Display", serif',
-                        fontWeight: 'bold',
-                        color: theme.palette.primary.main,
-                        textAlign: 'center',
-                        mb: 3
-                    }}
-                >
-                    Create Account
+                <Typography variant="h5" gutterBottom sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 'bold', color: theme.palette.primary.main, textAlign: 'center' }}>
+                    Any dietary requirements?
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mb: 3 }}>
+                    Select any dietary restrictions or preferences you have
                 </Typography>
 
-                {/* social auth */}
                 <Stack spacing={2}>
-                    <Button
-                        variant="outlined"
-                        startIcon={<AppleIcon />}
-                        fullWidth
-                        onClick={() => handleSocial('apple')}
-                        sx={{
-                            textTransform: 'none',
-                            py: 1.5,
-                            borderRadius: 3
-                        }}
-                    >
-                        Continue with Apple
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<GoogleIcon />}
-                        fullWidth
-                        onClick={() => handleSocial('google')}
-                        sx={{
-                            textTransform: 'none',
-                            py: 1.5,
-                            borderRadius: 3
-                        }}
-                    >
-                        Continue with Google
-                    </Button>
+                    {dietaryRequirementsList.map(({ name, description, icon }) => {
+                        const isActive = dietaryRequirements.includes(name);
+                        return (
+                            <Card key={name} elevation={isActive ? 8 : 2} sx={{ borderRadius: 3, border: isActive ? `2px solid ${theme.palette.primary.main}` : '2px solid transparent' }}>
+                                <CardActionArea onClick={() => handleSelect(name)}>
+                                    <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, bgcolor: isActive ? theme.palette.primary.light + '20' : 'transparent' }}>
+                                        <Typography variant="h4">{icon}</Typography>
+                                        <Box>
+                                            <Typography variant="subtitle1" sx={{ fontWeight: isActive ? 'bold' : 'normal', color: isActive ? theme.palette.primary.main : theme.palette.text.primary }}>
+                                                {name}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {description}
+                                            </Typography>
+                                        </Box>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                        );
+                    })}
                 </Stack>
-
-                {/* divider */}
-                <Box sx={{ my: 3, display: 'flex', alignItems: 'center' }}>
-                    <Divider sx={{ flex: 1 }} />
-                    <Typography variant="body2" sx={{ mx: 2, color: 'text.secondary' }}>
-                        or
-                    </Typography>
-                    <Divider sx={{ flex: 1 }} />
-                </Box>
-
-                {/* email/password form */}
-                <Stack spacing={2}>
-                    <TextField
-                        label="Email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        fullWidth
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 3
-                            }
-                        }}
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        fullWidth
-                        sx={{
-                            '& .MuiOutlinedInput-root': {
-                                borderRadius: 3
-                            }
-                        }}
-                    />
-                </Stack>
-
-                {/* login link */}
-                <Box sx={{ textAlign: 'center', mt: 3 }}>
-                    <Typography variant="body2">
-                        Already have an account?{' '}
-                        <Link
-                            component="button"
-                            variant="body2"
-                            onClick={() => navigate('/login')}
-                        >
-                            Log in
-                        </Link>
-                    </Typography>
-                </Box>
             </Container>
 
-            {/* sticky footer */}
-            <Box
-                sx={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    width: '100%',
-                    bgcolor: theme.palette.background.default,
-                    borderTop: `1px solid ${theme.palette.divider}`,
-                    px: 2,
-                    py: 1.5,
-                }}
-            >
-                <MobileStepper
-                    variant="dots"
-                    steps={3}
-                    position="static"
-                    activeStep={2}
-                    nextButton={<div />}
-                    backButton={<div />}
-                    sx={{
-                        justifyContent: 'center',
-                        display: 'flex',
-                        bgcolor: 'transparent',
-                        mb: 1,
-                    }}
-                />
-                <Button
-                    variant="contained"
-                    size="large"
-                    disabled={!email || !password}
-                    onClick={handleRegister}
-                    fullWidth
-                    sx={{ py: 1.5, borderRadius: 3 }}
-                >
-                    Create Account
+            <Box sx={{ position: 'fixed', bottom: 0, left: 0, width: '100%', bgcolor: theme.palette.background.default, borderTop: `1px solid ${theme.palette.divider}`, px: 2, py: 1.5 }}>
+                <MobileStepper variant="dots" steps={4} position="static" activeStep={2} nextButton={<div />} backButton={<div />} sx={{ justifyContent: 'center', display: 'flex', bgcolor: 'transparent', mb: 1 }} />
+                <Button variant="contained" size="large" disabled={dietaryRequirements.length === 0} onClick={handleNext} fullWidth sx={{ py: 1.5, borderRadius: 3 }}>
+                    Next
                 </Button>
             </Box>
         </Box>

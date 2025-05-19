@@ -1,0 +1,231 @@
+[
+  {
+    "id": 1,
+    "cuisineId": "asian-cuisine",
+    "name": "Simple Stir Fry",
+    "steps": [
+      {
+        "title": "Introduction to Stir Fry",
+        "content": "Stir frying is a quick cooking technique that originated in China. It's perfect for busy weeknights when you want a flavorful, healthy meal in minutes!",
+        "image": "/stir-fry.jpg"
+      },
+      {
+        "title": "Prepare Your Ingredients",
+        "content": "Cut all vegetables into uniform, bite-sized pieces. This ensures everything cooks evenly. Have all ingredients ready before you start cooking.",
+        "videoSrc": "/videos/Dice-tomatoes-Demo.mp4",
+        "noteRating": "92% of users suggest: ",
+        "noteText": "Cutting vegetables on the diagonal (bias cut) creates more surface area and helps them cook faster.",
+        "noteAuthor": "- AsianFoodExpert"
+      },
+      {
+        "title": "Make the Sauce",
+        "content": "Combine soy sauce, a splash of rice vinegar, minced garlic, and a touch of sugar. A good sauce is the foundation of a delicious stir fry.",
+        "image": "/stir-fry-sauce.jpg",
+        "noteRating": "87% of users suggest: ",
+        "noteText": "Add a teaspoon of cornstarch to your sauce to help it thicken and coat the ingredients better.",
+        "noteAuthor": "- ChefLin"
+      },
+      {
+        "title": "Heat the Wok",
+        "content": "Heat your wok or pan until it's very hot before adding oil. This prevents sticking and gives food that authentic 'wok hei' flavor.",
+        "image": "/hot-wok.jpg",
+        "noteRating": "95% of users suggest: ",
+        "noteText": "If you don't have a wok, a large flat-bottomed skillet works well too. Just make sure it's hot before adding ingredients!",
+        "noteAuthor": "- HomeChefGuru"
+      },
+      {
+        "title": "Cook in the Right Order",
+        "content": "Start with aromatics (garlic, ginger), then add protein, followed by vegetables (hardest to softest), and finally the sauce. Toss continuously while cooking.",
+        "image": "/stir-fry-cooking.jpg",
+        "videoSrc": "/videos/Stir-frying.mp4",
+        "noteRating": "91% of users suggest: ",
+        "noteText": "Don't overcrowd the pan or your ingredients will steam instead of stir-fry. Cook in batches if necessary.",
+        "noteAuthor": "- WokMaster"
+      },
+      {
+        "title": "Serve Immediately",
+        "content": "Stir fries are best enjoyed right away while hot and fresh. Serve over steamed rice or noodles for a complete meal!",
+        "image": "/stir-fry.jpg",
+        "noteRating": "88% of users suggest: ",
+        "noteText": "Garnish with fresh herbs like cilantro or sliced green onions for extra flavor and presentation points.",
+        "noteAuthor": "- FoodStylist101"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "cuisineId": "asian-cuisine",
+    "name": "Spring Rolls",
+    "steps": [
+      {
+        "title": "Introduction to Spring Rolls",
+        "content": "Fresh spring rolls are a healthy, customizable appetizer or light meal with roots in Southeast Asian cuisine.",
+        "image": "/spring-rolls.jpg"
+      },
+      {
+        "title": "Step 1: Prepare the Fillings",
+        "content": "Wash and julienne vegetables like carrots, cucumber, and bell peppers. Cook and cool protein if using.",
+        "image": "/spring-roll-prep.jpg",
+        "noteRating": "89% of users suggest: ",
+        "noteText": "Using a mandoline slicer makes getting thin, uniform vegetable strips much easier and faster.",
+        "noteAuthor": "- PrecisionCook"
+      },
+      {
+        "title": "Step 2: Soften Rice Paper",
+        "content": "Fill a large, shallow dish with warm water. Dip one rice paper wrapper for about 5-10 seconds until pliable but not too soft.",
+        "image": "/rice-paper.jpg",
+        "noteRating": "94% of users suggest: ",
+        "noteText": "Don't soak the rice paper too long - it will continue to soften as you work with it!",
+        "noteAuthor": "- VietCuisineExpert"
+      },
+      {
+        "title": "Step 3: Fill and Roll",
+        "content": "Place fillings on the bottom third of the wrapper, fold in sides, and roll tightly from the bottom up, like wrapping a burrito.",
+        "image": "/rolling-spring-roll.jpg",
+        "noteRating": "86% of users suggest: ",
+        "noteText": "Place a few fresh herb leaves (mint, basil, cilantro) facing down first so they show through the wrapper for a beautiful presentation.",
+        "noteAuthor": "- FoodPhotographer"
+      },
+      {
+        "title": "Step 4: Make Dipping Sauce",
+        "content": "Mix hoisin sauce with peanut butter, a splash of water, and crushed peanuts for a classic Vietnamese-style dipping sauce.",
+        "image": "/dipping-sauce.jpg",
+        "noteRating": "91% of users suggest: ",
+        "noteText": "For a Thai-style dipping sauce alternative, try sweet chili sauce mixed with a bit of lime juice and fish sauce.",
+        "noteAuthor": "- FlavorMaster"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "cuisineId": "mediterranean-magic",
+    "name": "Fattoush Salad",
+    "steps": [
+      {
+        "title": "Introduction to Fattoush",
+        "content": "Fattoush is a vibrant Lebanese salad made with fresh vegetables, crispy pita, and a zesty dressing. Let's learn how to make it step by step!",
+        "image": "/fattoush.jpg"
+      },
+      {
+        "title": "Step 1: Prepare the Vegetables",
+        "content": "Chop tomatoes, cucumbers, radishes, lettuce, and green onions into bite-sized pieces. Freshness is key!",
+        "image": "/chopped.jpg",
+        "noteRating": "71% of users suggest: ",
+        "noteText": "If you are rushed by time or unable to chop the ingredients with a knife, you could try using a food processor.",
+        "noteAuthor": "- CollegeBoy123"
+      },
+      {
+        "title": "Step 2: Toast the Pita",
+        "content": "Cut pita bread into small pieces and toast or fry until golden and crispy. This adds the signature crunch to Fattoush.",
+        "image": "/toastpita.jpg",
+        "noteRating": "94% of users suggest: ",
+        "noteText": "Feel free to adjust how long the bread should be fried for! If you prefer something less crunchier, fry it for a shorter duration of time!",
+        "noteAuthor": "- HomeCookPro"
+      },
+      {
+        "title": "Step 3: Make the Dressing",
+        "content": "Whisk together olive oil, lemon juice, sumac, garlic, salt, and pepper. Sumac gives Fattoush its tangy flavor.",
+        "image": "/dressing.jpg",
+        "noteRating": "84% of users suggest: ",
+        "noteText": "Use the best quality extra virgin olive oil you can find and avoid those simply labeled as \"Pure\", they lack character and flavor",
+        "noteAuthor": "- Paolo Ferraro"
+      },
+      {
+        "title": "Step 4: Toss & Serve",
+        "content": "Combine veggies, pita, and dressing. Toss well and serve immediately for the best crunch. Enjoy your homemade Fattoush!",
+        "image": "/tossandserve.jpg",
+        "noteRating": "90% of users suggest: ",
+        "noteText": "If you think you make too much of a mess when tossing the ingredients, try using a lid! Make sure to give enough space for the food to toss around though",
+        "noteAuthor": "- NewComerCook"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "cuisineId": "mediterranean-magic",
+    "name": "Greek Tzatziki",
+    "steps": [
+      {
+        "title": "Introduction to Tzatziki",
+        "content": "Tzatziki is a refreshing Greek yogurt dip with cucumber, garlic, and herbs. Perfect as an appetizer or side dish!",
+        "image": "/tzatziki.jpg"
+      },
+      {
+        "title": "Step 1: Prepare the Cucumber",
+        "content": "Grate one cucumber and squeeze out excess moisture. This prevents the dip from becoming watery.",
+        "image": "/cucumber.jpg",
+        "noteRating": "88% of users suggest: ",
+        "noteText": "Use a cheese cloth or clean kitchen towel to really get all the moisture out of the cucumber.",
+        "noteAuthor": "- CookingQueen"
+      },
+      {
+        "title": "Step 2: Mix the Base",
+        "content": "In a bowl, combine 2 cups of Greek yogurt with 2 minced garlic cloves and 1 tbsp olive oil.",
+        "image": "/yogurt.jpg",
+        "noteRating": "78% of users suggest: ",
+        "noteText": "Full-fat Greek yogurt works best for authentic flavor and creamy texture.",
+        "noteAuthor": "- ChefAlex"
+      },
+      {
+        "title": "Step 3: Add Herbs & Seasonings",
+        "content": "Mix in cucumber, 2 tbsp fresh dill, 1 tbsp fresh mint, salt, pepper, and a squeeze of lemon juice.",
+        "image": "/herbs.jpg",
+        "noteRating": "91% of users suggest: ",
+        "noteText": "Don't skimp on the fresh herbs - they make all the difference in flavor!",
+        "noteAuthor": "- HerbGardener"
+      },
+      {
+        "title": "Step 4: Rest & Serve",
+        "content": "Cover and refrigerate for at least 1 hour before serving to let flavors meld. Enjoy with pita bread!",
+        "image": "/tzatziki-final.jpg",
+        "noteRating": "95% of users suggest: ",
+        "noteText": "Tzatziki tastes even better the next day, so consider making it ahead of time.",
+        "noteAuthor": "- MealPrepMaster"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "cuisineId": "mediterranean-magic",
+    "name": "Hummus",
+    "steps": [
+      {
+        "title": "Introduction to Hummus",
+        "content": "Hummus is a creamy Middle Eastern dip made from chickpeas, tahini, and olive oil. Let's make this versatile and nutritious dish!",
+        "image": "/hummus.jpg"
+      },
+      {
+        "title": "Step 1: Prepare the Chickpeas",
+        "content": "Drain and rinse one can of chickpeas. For ultra-smooth hummus, remove the skins.",
+        "image": "/chickpeas.jpg",
+        "noteRating": "87% of users suggest: ",
+        "noteText": "Warm chickpeas blend more smoothly. Microwave them for 30 seconds before blending.",
+        "noteAuthor": "- SmoothOperator"
+      },
+      {
+        "title": "Step 2: Blend Base Ingredients",
+        "content": "In a food processor, combine chickpeas with 1/4 cup tahini, 2 tbsp olive oil, and 2 cloves of garlic.",
+        "image": "/blend-hummus.jpg",
+        "noteRating": "92% of users suggest: ",
+        "noteText": "Add ingredients in this order: tahini and olive oil first, then chickpeas for the smoothest texture.",
+        "noteAuthor": "- ProfessionalChef"
+      },
+      {
+        "title": "Step 3: Add Flavors",
+        "content": "Add juice from 1 lemon, 1/4 tsp cumin, salt, and 2-3 tbsp water. Blend until smooth and creamy.",
+        "image": "/hummus-season.jpg",
+        "noteRating": "89% of users suggest: ",
+        "noteText": "Add ice water instead of room temperature water for a fluffier texture!",
+        "noteAuthor": "- MediterraneanCook"
+      },
+      {
+        "title": "Step 4: Serve with Style",
+        "content": "Transfer to a bowl, create a well in the center, drizzle with olive oil and sprinkle with paprika and chopped parsley.",
+        "image": "/hummus-serve.jpg",
+        "noteRating": "96% of users suggest: ",
+        "noteText": "Let hummus rest for an hour before serving to develop flavors, and serve at room temperature.",
+        "noteAuthor": "- TasteMaker"
+      }
+    ]
+  }
+] 
